@@ -4,4 +4,15 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+    <!--需根据web.xml详解完善-->
+    <servlet>
+        <servlet-name>GetSearchReqServlet</servlet-name>
+        <servlet-class>com.huoteng.servlet.GetSearchReqServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetSearchReqServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+        <!-- servlet mapping如何符合规范-->
+    </servlet-mapping>
 </web-app>
