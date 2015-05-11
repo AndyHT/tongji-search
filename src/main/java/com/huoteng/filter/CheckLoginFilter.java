@@ -1,0 +1,62 @@
+package com.huoteng.filter;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+/**
+ * Check user is login or not
+ * Created by huoteng on 5/11/15.
+ */
+public class CheckLoginFilter implements Filter {
+
+    private FilterConfig config;
+
+    public void destroy() {
+    }
+
+    /**
+     * if user is not login, go to login page
+     * else pass the filter
+     * @param req
+     * @param resp
+     * @param chain
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
+        HttpSession session = request.getSession();
+
+        String filterPath = config.getInitParameter("filterPath");
+        boolean isNeedFilter = false;
+        if (filterPath != null) {
+            String[] filterPathArray = filterPath.split(";");
+            for (String str : filterPathArray) {
+                if (request.getRequestURI().contains(str)) {
+                    isNeedFilter = true;
+                    break;
+                }
+            }
+        }
+
+        if (isNeedFilter) {
+            if (session.getAttribute("username") != null) {
+                chain.doFilter(req, resp);
+            } else {
+                response.sendRedirect("nologin.html");
+            }
+        } else {
+            chain.doFilter(req,response);
+        }
+    }
+
+    public void init(FilterConfig config) throws ServletException {
+        this.config = config;
+    }
+
+}

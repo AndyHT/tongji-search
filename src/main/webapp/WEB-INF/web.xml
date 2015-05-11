@@ -4,15 +4,33 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-    <!--需根据web.xml详解完善-->
+
+    <filter>
+        <filter-name>CheckLoginFilter</filter-name>
+        <filter-class>com.huoteng.filter.CheckLoginFilter</filter-class>
+        <init-param>
+            <param-name>filterPath</param-name>
+            <param-value>manage.html</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CheckLoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
-        <servlet-name>GetSearchReqServlet</servlet-name>
-        <servlet-class>com.huoteng.servlet.GetSearchReqServlet</servlet-class>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.huoteng.servlet.LoginServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>GetSearchReqServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-        <!-- servlet mapping如何符合规范-->
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login/</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.html</location>
+    </error-page>
 </web-app>
