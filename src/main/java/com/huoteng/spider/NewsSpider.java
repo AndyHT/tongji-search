@@ -5,6 +5,7 @@ import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.io.File;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +15,10 @@ import java.util.regex.Pattern;
  * Created by huoteng on 5/5/15.
  */
 public class NewsSpider implements PageProcessor {
+
+
+
+    private String newsContent;
 
     private Site sseSite = Site.me().setRetryTimes(3).setSleepTime(1000);
     /**
@@ -26,12 +31,7 @@ public class NewsSpider implements PageProcessor {
         Pattern titlePattern = Pattern.compile("[^\\s\\ba-zA-Z=<>]*[^0-9a-zA-Z_:<>/.]+");//匹配title（无法匹配）
 
         List<String> newsList = newsPage.getHtml().css("div.news_title").all();//得到新闻标题和href
-        String newsContent = newsPage.getHtml().css("div.content").get();//得到新闻内容,需要交给IKAnalyzer
-
-        if (null != newsContent) {
-            System.out.println("Content: " + newsContent);
-            //叫给IKAnalyzer处理
-        }
+        newsContent = newsPage.getHtml().css("div.content").get();//得到新闻内容,需要交给IKAnalyzer
 
         for (String aNews : newsList) {
             System.out.println("news:" + aNews);
@@ -41,19 +41,38 @@ public class NewsSpider implements PageProcessor {
              * 将新闻的url和标题提取出来
              */
             if (urlMatcher.find() && titleMatcher.find()) {
-                System.out.println("URL: " + urlMatcher.group());
-                System.out.println("Title: " + titleMatcher.group());
+                String url = urlMatcher.group();
+                String title = titleMatcher.group();
+                System.out.println("URL: " + url);
+                System.out.println("Title: " + title);
                 newsPage.addTargetRequest(urlMatcher.group());
 
                 /**
                  * url & title存入数据库
                  */
+
+                /**
+                 * title & content保存到磁盘上
+                 */
+                if (null != newsContent) {
+                    System.out.println("Content: " + newsContent);
+                    //存储到磁盘上
+
+                    File newsFile = new File("/Users/huoteng/Documents/content" + title);
+
+                }
             }
         }
+
+
     }
 
     public Site getSite() {
         return sseSite;
+    }
+
+    public String getNewsContent() {
+        return newsContent;
     }
 
     /**
