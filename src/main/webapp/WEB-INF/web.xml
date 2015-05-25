@@ -27,6 +27,10 @@
         <servlet-name>GetSearchServlet</servlet-name>
         <servlet-class>com.huoteng.servlet.GetSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StartSpiderServlet</servlet-name>
+        <servlet-class>com.huoteng.servlet.StartSpiderServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -35,7 +39,12 @@
 
     <servlet-mapping>
         <servlet-name>GetSearchServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/search/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>StartSpiderServlet</servlet-name>
+        <url-pattern>/start-spider/</url-pattern>
     </servlet-mapping>
 
     <error-page>
