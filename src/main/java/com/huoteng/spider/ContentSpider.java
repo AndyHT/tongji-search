@@ -13,12 +13,15 @@ public class ContentSpider implements PageProcessor {
 
     private String content;
 
+    private String date;
+
     private Site sseSite = Site.me().setRetryTimes(3).setSleepTime(1000);
 
     public void process(Page contentPage) {
 
         //将content里的web标签去掉
         content = ContentSpider.splitAndFilterString(contentPage.getHtml().css("div.content").get());
+        date = ContentSpider.splitAndFilterString(contentPage.getHtml().css("span.date").get());
 
     }
 
@@ -40,5 +43,9 @@ public class ContentSpider implements PageProcessor {
 
     public String getContent() {
         return content;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

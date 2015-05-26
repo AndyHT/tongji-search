@@ -57,7 +57,8 @@ public class SearchEngine {
                 System.out.println("title:" + targetDoc.getField("title").stringValue());
                 searchResultList.add(new Article(targetDoc.getField("url").stringValue(),
                         targetDoc.getField("title").stringValue(),
-                        targetDoc.getField("title-content").stringValue()));
+                        targetDoc.getField("title-date-content").stringValue(),
+                        targetDoc.getField("date").stringValue()));
             }
 
             return searchResultList;

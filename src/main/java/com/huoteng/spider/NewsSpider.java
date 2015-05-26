@@ -58,8 +58,9 @@ public class NewsSpider implements PageProcessor {
                 Spider.create(contentSpider).addUrl(url).thread(1).run();
 
                 String newsContent = contentSpider.getContent();
+                String newsDate = contentSpider.getDate();
 
-                articles.add(new Article(url, title, newsContent));
+                articles.add(new Article(url, title, newsContent, newsDate));
             }
         }
 

@@ -58,7 +58,7 @@ public class StartSpiderServlet extends HttpServlet {
             boolean isSuccess = false;
             for (Object object : articles) {
                 Article article = (Article)object;
-                isSuccess = index.createIndex(article.url, article.title, article.content, directory);
+                isSuccess = index.createIndex(article.url, article.title, article.content, article.date, directory);
             }
 
             response.addHeader("Content-Type", "text/javascript;charset=utf-8");

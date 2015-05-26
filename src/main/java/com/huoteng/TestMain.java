@@ -32,12 +32,13 @@ public class TestMain {
             Article article = (Article)object;
             System.out.println("url:" + article.url);
             System.out.println("title:" + article.title);
+            System.out.println("date:" + article.date);
             System.out.println("content:" + article.content);
             System.out.println();
-            index.createIndex(article.url, article.title, article.content, directory);
+            index.createIndex(article.url, article.title, article.content, article.date, directory);
         }
 
-        engine.search("本科生", directory);
+        engine.search("2013级本科生", directory);
 
     }
 
