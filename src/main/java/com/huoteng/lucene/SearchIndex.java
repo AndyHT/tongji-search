@@ -44,7 +44,7 @@ public class SearchIndex {
             Document doc = new Document();
             doc.add(new StringField("url", url, Field.Store.YES));
             doc.add(new TextField("title", title, Field.Store.YES));
-            doc.add(new TextField("content", content, Field.Store.YES));
+            doc.add(new TextField("title-content", title + content, Field.Store.YES));
             writer.addDocument(doc);
             writer.close();
 

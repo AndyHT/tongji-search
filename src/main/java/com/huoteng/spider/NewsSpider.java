@@ -49,16 +49,14 @@ public class NewsSpider implements PageProcessor {
             if (urlMatcher.find() && titleMatcher.find()) {
                 url = urlMatcher.group();
                 title = titleMatcher.group();
+                title = title.replaceAll("[></a>]", "");
 //                System.out.println("URL:" + url);
 //                System.out.println("Title:" + title);
 
                 //异步的方式去拿content
-                //如何实现异步
                 ContentSpider contentSpider = new ContentSpider();
                 Spider.create(contentSpider).addUrl(url).thread(1).run();
-                //如何关闭爬虫线程?
 
-                //关闭content爬虫线程
                 String newsContent = contentSpider.getContent();
 
                 articles.add(new Article(url, title, newsContent));

@@ -9,6 +9,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * 测试
@@ -29,9 +30,15 @@ public class TestMain {
 
         for (Object object : articles) {
             Article article = (Article)object;
-            index.createIndex(article.url, article.title, directory);
+            System.out.println("url:" + article.url);
+            System.out.println("title:" + article.title);
+            System.out.println("content:" + article.content);
+            System.out.println();
+            index.createIndex(article.url, article.title, article.content, directory);
         }
 
         engine.search("本科生", directory);
+
     }
+
 }

@@ -40,7 +40,7 @@ public class SearchEngine {
             searcher = new IndexSearcher(reader);
 
             //使用QueryParser查询分析器构造Query对象
-            QueryParser queryParse = new QueryParser(Version.LUCENE_40, "title", analyzer);
+            QueryParser queryParse = new QueryParser(Version.LUCENE_40, "title-content", analyzer);
             queryParse.setDefaultOperator(QueryParser.AND_OPERATOR);
             Query query = queryParse.parse(keyword);
             System.out.println("Query = " + query);
@@ -56,7 +56,8 @@ public class SearchEngine {
                 System.out.println("url:" + targetDoc.getField("url").stringValue());
                 System.out.println("title:" + targetDoc.getField("title").stringValue());
                 searchResultList.add(new Article(targetDoc.getField("url").stringValue(),
-                        targetDoc.getField("title").stringValue()));
+                        targetDoc.getField("title").stringValue(),
+                        targetDoc.getField("title-content").stringValue()));
             }
 
             return searchResultList;
