@@ -6,7 +6,14 @@
 </head>
 <body>
 <h1>Manage page</h1>
-<p>显示数据库里的网页列表，可以CRUD</p>
 <p>可以启动爬虫抓取数据</p>
+<form action="/start-spider/" method="post">
+    <input type="submit" value="action">
+</form>
+<form action="/managedata/" method="post">
+    <input type="submit" value="create">
+    <input type="submit" value="delete">
+    <input type="submit" value="update">
+</form>
 </body>
 </html>

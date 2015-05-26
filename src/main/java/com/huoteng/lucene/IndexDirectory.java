@@ -10,6 +10,9 @@ import java.io.File;
  */
 public class IndexDirectory {
 
+
+    private static File indexFile;
+
     private static Directory directory;
 
     public static Directory getDirectory() {
@@ -20,5 +23,12 @@ public class IndexDirectory {
         IndexDirectory.directory = directory;
     }
 
+    public static File getIndexFile() {
+        return indexFile;
+    }
+
+    public static void setIndexFile(File indexFile) {
+        IndexDirectory.indexFile = indexFile;
+    }
 
 }
