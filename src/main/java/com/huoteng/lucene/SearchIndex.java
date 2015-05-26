@@ -27,7 +27,7 @@ public class SearchIndex {
      * @param title 文章的title
      * @return 建立索引是否成功
      */
-    public boolean createIndex(String url, String title, Directory directory) {
+    public boolean createIndex(String url, String title, String content, Directory directory) {
         boolean success = false;
 
         IndexWriter writer;
@@ -44,6 +44,7 @@ public class SearchIndex {
             Document doc = new Document();
             doc.add(new StringField("url", url, Field.Store.YES));
             doc.add(new TextField("title", title, Field.Store.YES));
+            doc.add(new TextField("content", content, Field.Store.YES));
             writer.addDocument(doc);
             writer.close();
 

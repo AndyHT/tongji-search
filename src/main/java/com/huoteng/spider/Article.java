@@ -5,13 +5,15 @@ package com.huoteng.spider;
  */
 public class Article {
 
-    public Article(String url, String title) {
+    public Article(String url, String title, String content) {
         this.url = url;
         this.title = title;
+        this.content = content;
     }
 
     public String url;
     public String title;
+    public String content;
     //    public Date date;
 
 }

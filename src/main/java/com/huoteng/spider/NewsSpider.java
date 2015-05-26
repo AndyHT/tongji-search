@@ -28,17 +28,17 @@ public class NewsSpider implements PageProcessor {
      */
     public void process(Page newsPage) {
 
-
         List<String> newsList = newsPage.getHtml().css("div.news_title").all();//得到新闻标题和href
+
         System.out.println("得到News");
 
         Pattern urlPattern = Pattern.compile("http://sse[.]tongji[.]edu[.]cn/Notice/[\\d]+");//匹配url
         Pattern titlePattern = Pattern.compile(">[^/\\s]+</a>");//匹配title
+
         Matcher urlMatcher;
         Matcher titleMatcher;
         String url;
         String title;
-//        String content;
 
         for (String aNews : newsList) {
 //            System.out.println(aNews);
@@ -51,7 +51,17 @@ public class NewsSpider implements PageProcessor {
                 title = titleMatcher.group();
 //                System.out.println("URL:" + url);
 //                System.out.println("Title:" + title);
-                articles.add(new Article(url, title));
+
+                //异步的方式去拿content
+                //如何实现异步
+                ContentSpider contentSpider = new ContentSpider();
+                Spider.create(contentSpider).addUrl(url).thread(1).run();
+                //如何关闭爬虫线程?
+
+                //关闭content爬虫线程
+                String newsContent = contentSpider.getContent();
+
+                articles.add(new Article(url, title, newsContent));
             }
         }
 
