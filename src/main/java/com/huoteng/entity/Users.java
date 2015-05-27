@@ -1,13 +1,15 @@
-package com.huoteng.hibernate;
+package com.huoteng.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
- * Created by huoteng on 5/26/15.
+ * Created by huoteng on 5/27/15.
  */
 @Entity
-@Table(name = "users", schema = "", catalog = "search")
-public class UsersEntity {
+public class Users {
     private int id;
     private String name;
     private String pass;
@@ -47,11 +49,11 @@ public class UsersEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UsersEntity that = (UsersEntity) o;
+        Users users = (Users) o;
 
-        if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (pass != null ? !pass.equals(that.pass) : that.pass != null) return false;
+        if (id != users.id) return false;
+        if (name != null ? !name.equals(users.name) : users.name != null) return false;
+        if (pass != null ? !pass.equals(users.pass) : users.pass != null) return false;
 
         return true;
     }

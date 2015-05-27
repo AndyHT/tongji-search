@@ -1,13 +1,13 @@
-package com.huoteng.hibernate;
+package com.huoteng.entity;
 
 import javax.persistence.*;
 
 /**
- * Created by huoteng on 5/26/15.
+ * Created by huoteng on 5/27/15.
  */
 @Entity
 @Table(name = "target-url", schema = "", catalog = "search")
-public class TargetUrlEntity {
+public class TargetUrl {
     private int id;
     private String url;
 
@@ -36,10 +36,10 @@ public class TargetUrlEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TargetUrlEntity that = (TargetUrlEntity) o;
+        TargetUrl targetUrl = (TargetUrl) o;
 
-        if (id != that.id) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        if (id != targetUrl.id) return false;
+        if (url != null ? !url.equals(targetUrl.url) : targetUrl.url != null) return false;
 
         return true;
     }

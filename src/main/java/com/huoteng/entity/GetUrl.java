@@ -1,13 +1,13 @@
-package com.huoteng.hibernate;
+package com.huoteng.entity;
 
 import javax.persistence.*;
 
 /**
- * Created by huoteng on 5/26/15.
+ * Created by huoteng on 5/27/15.
  */
 @Entity
 @Table(name = "get-url", schema = "", catalog = "search")
-public class GetUrlEntity {
+public class GetUrl {
     private int id;
     private String url;
     private String date;
@@ -58,12 +58,12 @@ public class GetUrlEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GetUrlEntity that = (GetUrlEntity) o;
+        GetUrl getUrl = (GetUrl) o;
 
-        if (id != that.id) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        if (id != getUrl.id) return false;
+        if (url != null ? !url.equals(getUrl.url) : getUrl.url != null) return false;
+        if (date != null ? !date.equals(getUrl.date) : getUrl.date != null) return false;
+        if (title != null ? !title.equals(getUrl.title) : getUrl.title != null) return false;
 
         return true;
     }
