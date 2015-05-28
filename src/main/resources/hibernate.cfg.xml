@@ -9,17 +9,16 @@
         <property name="connection.username">andy</property>
         <property name="connection.password">password</property>
         <property name="show_sql">true</property>
-        <property name="format_sql">true</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hbm2ddl.auto">update</property>
-
+        <property name="format_sql">true</property>
+        <property name="current_session_context_class">thread</property>
 
         <mapping class="com.huoteng.entity.GetUrl"/>
-        <mapping resource="com/huoteng/entity/GetUrl.hbm.xml"/>
+        <mapping resource="GetUrl.hbm.xml"/>
         <mapping class="com.huoteng.entity.TargetUrl"/>
-        <mapping resource="com/huoteng/entity/TargetUrl.hbm.xml"/>
+        <mapping resource="TargetUrl.hbm.xml"/>
         <mapping class="com.huoteng.entity.Users"/>
-        <mapping resource="com/huoteng/entity/Users.hbm.xml"/>
+        <mapping resource="Users.hbm.xml"/>
 
         <!-- DB schema will be updated if needed -->
     </session-factory>

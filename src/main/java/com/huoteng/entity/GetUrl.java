@@ -1,16 +1,17 @@
 package com.huoteng.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
- * Created by huoteng on 5/27/15.
+ * Created by huoteng on 5/28/15.
  */
 @Entity
-@Table(name = "get-url", schema = "", catalog = "search")
+@Table(name = "get-url", catalog = "search")
 public class GetUrl {
     private int id;
     private String url;
-    private String date;
+    private Date date;
     private String title;
 
     @Id
@@ -35,11 +36,11 @@ public class GetUrl {
 
     @Basic
     @Column(name = "date")
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
