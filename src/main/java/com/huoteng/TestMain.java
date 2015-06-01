@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class TestMain {
     public static void main(String[] args) {
-        exeDatabase();
+        testDatabaseConnect();
     }
 
     public static void createIndex() {
@@ -48,16 +48,20 @@ public class TestMain {
 
     }
 
-    public static void exeDatabase() {
-        ManageEntity manageEntity = new ManageEntity();
+    /**
+     * 测试HibernateController
+     */
+    public static void testDatabaseConnect() {
 
-        manageEntity.init();
+        
 
-        Users user = new Users();
-        user.setName("Tingran");
-        user.setPass("helloworld");
-        ManageEntity.insertUser(user);
-        System.out.println("插入User成功");
+//        ManageEntity manageEntity = new ManageEntity();
+//        manageEntity.init();
+//        Users user = new Users();
+//        user.setName("Tingran");
+//        user.setPass("helloworld");
+//        ManageEntity.insertUser(user);
+//        System.out.println("插入User成功");
 
 //        GetUrl url = new GetUrl();
 //        url.setTitle("杀人啦");
@@ -71,6 +75,6 @@ public class TestMain {
 //        ManageEntity.insertTargetUrl(targetUrl);
 //        System.out.println("插入TargetURL成功");
 
-        manageEntity.destroy();
+//        manageEntity.destroy();
     }
 }

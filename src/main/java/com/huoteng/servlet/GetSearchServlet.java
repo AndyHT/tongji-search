@@ -1,5 +1,6 @@
 package com.huoteng.servlet;
 
+import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
 import com.huoteng.spider.Article;
@@ -27,8 +28,8 @@ public class GetSearchServlet extends HttpServlet {
 
     /**
      *
-     * @param request
-     * @param response
+     * @param request request
+     * @param response response
      * @throws ServletException
      * @throws IOException
      */
@@ -38,19 +39,18 @@ public class GetSearchServlet extends HttpServlet {
         //根据keyword查询
         SearchEngine engine = new SearchEngine();
         Directory directory = IndexDirectory.getDirectory();
-        ArrayList<Article> result;
+        ArrayList result;
         if (directory != null) {
             result = engine.search(keyword, directory);
 
-
-            //调用QueryResponese将result转为json
-            String resultJson = "";
+            //将result转为json
+            String jsonResult = Json.changeArticleListToJson(result);
 
             response.addHeader("Content-Type", "text/json;charset=utf-8");
             response.addHeader("Cache-Control", "private");
 
             OutputStream out = response.getOutputStream();
-            out.write(resultJson.getBytes());
+            out.write(jsonResult.getBytes());
             out.close();
         }
     }
