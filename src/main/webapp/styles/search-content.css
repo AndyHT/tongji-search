@@ -1,0 +1,65 @@
+.tongji-logo{
+	margin: 0 auto;
+	width: 50%;
+}
+img{
+	width: 100%;
+	height: 51.32%;
+	max-height: 200px;
+}
+.search-box{
+	margin: 0 auto;
+	width: 80%;
+}
+.search-form {
+	float: left;
+	background-color: #FFF;
+	padding: 5px;
+	width: 100%;
+}
+.search-input-text {
+	border: 0;
+	padding: 0;
+	float: left;
+	line-height: 25px;
+	outline: none;
+	width: 90%;
+	height: 100%;
+	font-size: 24px;
+}
+.search-input-btn {
+	border: 0;
+	float: right;
+	background-image: url(../images/search.png);
+	background-color: #fff;
+	width: 30px;
+	height: 30px;
+}
+.newMessage{
+	clear: both;
+	color: #fff;
+	background-color: red;
+	margin: 0 auto;
+}
+
+
+.suggest {
+	width: 390px;
+	background-color: #fff;
+	border: 1px solid #999;
+}
+.suggest ul{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.suggest ul li{
+	padding: 3px;
+	font-size: 14px;
+	line-height: 25px;
+	cursor: pointer; 
+}
+.suggest ul li:hover{
+	background-color: #e5e5e5;
+	text-decoration: underline;
+}

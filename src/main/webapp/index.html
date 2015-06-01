@@ -1,13 +1,124 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Tongji Search</title>
-</head>
-<body>
-Main page
-<h1>Tongji</h1>
-<a href="/login.html">login</a>
-<p>前端拿到json数据后放到页面上</p>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>search</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/cover.css">
+    <link rel="stylesheet" href="styles/search-content.css">
+    <!-- endbuild -->
+    <script src="bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Tongji Search</h3>
+              <nav>
+                <ul class="nav pull-right">
+                  <li>2015年6月1日</li>
+                  <li>第14周</li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <div class="tongji-logo">
+              <img src="images/logo.png">
+            </div>
+            <div class="search-box">
+              <form id="search-form" class="search-form" action="http://localhost:8080/getrequest/" target="_blank" method="get">
+                <input type="text" name="action=search&query" placeholder="搜索同济" class="search-input-text" id="search-input">
+                <input type="submit" value="" class="search-input-btn">
+              </form>
+            </div>  
+            <div class="message-div" id="new-message" style="display: none;">
+              <div>
+          
+              </div>
+              <p>最新消息</p>
+            </div>
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p><a href="http://localhost:9000">同济搜索</a>, 专注于更好的校内搜索</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+    <script>
+      $('#search-input').bind('keyup',function(){
+        var searchText = $('#search-input').val();
+        $.get('http://localhost:8080/getrequest?action=ajax&query='+searchText,function(data){
+          console.log(data);
+          var content = data.name;
+          console.log(content);
+          content = '<li>' + content + '</li>';
+          $('#search-suggest').html(content);
+          $('#search-suggest').show().css({
+          top:$('#search-form').offset().top + $('#search-form').height()+10,
+          left:$('#search-form').offset().left,
+          position:'absolute'
+        });
+      },'json');
+    });
+    $(document).bind('click',function(){
+      $('#search-suggest').hide();
+    })
+    $(document).ready(function(){
+      $.get('http://localhost:8080/newMessage',function(newMessage){
+        //解析newMessage
+        $('#new-message').show().css({
+          //newMessage的位置
+          //请求newMessage失败了怎么办？
+        });
+      },'json')
+    });
+  </script>
+  </body>
 </html>
