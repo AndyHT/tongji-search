@@ -2,6 +2,7 @@ package com.huoteng.servlet;
 
 import com.huoteng.controller.HibernateController;
 import com.huoteng.json.Json;
+import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -61,8 +62,14 @@ public class ManageDataServlet extends HttpServlet {
             if (hibernate.begin()) {
 
                 List urls = hibernate.findAllGotURL();
-                urls.addAll(hibernate.findAllTargetURL());
-                data = Json.changeUrlListToJson(urls);
+                try {
+                    data += Json.changeUrlListToJson(urls, true);
+                    urls.clear();
+                    urls = hibernate.findAllTargetURL();
+                    data += Json.changeUrlListToJson(urls, false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 isSuccess = true;
             }

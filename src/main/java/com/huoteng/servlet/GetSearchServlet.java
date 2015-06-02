@@ -4,6 +4,7 @@ import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
 import org.apache.lucene.store.Directory;
+import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +44,12 @@ public class GetSearchServlet extends HttpServlet {
             result = engine.search(keyword, directory);
 
             //将result转为json
-            String jsonResult = Json.changeArticleListToJson(result);
+            String jsonResult = null;
+            try {
+                jsonResult = Json.changeArticleListToJson(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             response.addHeader("Content-Type", "text/json;charset=utf-8");
             response.addHeader("Cache-Control", "private");

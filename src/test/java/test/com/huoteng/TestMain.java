@@ -1,4 +1,4 @@
-package com.huoteng;
+package test.com.huoteng;
 
 import com.huoteng.controller.SpiderController;
 import com.huoteng.lucene.SearchEngine;
