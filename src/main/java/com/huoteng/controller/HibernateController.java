@@ -134,14 +134,24 @@ public class HibernateController {
         transaction.commit();
     }
 
+    /**
+     * 7.新增GotURL
+     * @param gotUrls 需要加入Database的GotURLs
+     */
     public void addGotURL(ArrayList gotUrls) {
+        int i = 0;
         for (Object object : gotUrls) {
+            i++;
             GotUrl gotUrl = new GotUrl();
             gotUrl.setUrl(((Article) object).url);
             gotUrl.setTitle(((Article) object).title);
             gotUrl.setData(((Article) object).date);
-
             session.save(gotUrl);
+
+            if (0 == (i %20)) {
+                session.flush();
+                session.close();
+            }
         }
         transaction.commit();
     }
