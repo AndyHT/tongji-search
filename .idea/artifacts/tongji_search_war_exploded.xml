@@ -46,6 +46,7 @@
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queries:4.0.0" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-sandbox:4.0.0" />
           <element id="library" level="project" name="Maven: jakarta-regexp:jakarta-regexp:1.4" />
+          <element id="library" level="project" name="Maven: org.json:org.json:2.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

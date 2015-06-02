@@ -1,17 +1,14 @@
 package com.huoteng;
 
 import com.huoteng.controller.SpiderController;
-import com.huoteng.controller.ManageEntity;
-import com.huoteng.entity.*;
 import com.huoteng.lucene.SearchEngine;
 import com.huoteng.lucene.SearchIndex;
-import com.huoteng.spider.Article;
+import com.huoteng.model.Article;
 import com.huoteng.spider.NewsSpider;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * 测试
@@ -19,7 +16,7 @@ import java.util.Date;
  */
 public class TestMain {
     public static void main(String[] args) {
-        testDatabaseConnect();
+        createIndex();
     }
 
     public static void createIndex() {
@@ -48,33 +45,4 @@ public class TestMain {
 
     }
 
-    /**
-     * 测试HibernateController
-     */
-    public static void testDatabaseConnect() {
-
-        
-
-//        ManageEntity manageEntity = new ManageEntity();
-//        manageEntity.init();
-//        Users user = new Users();
-//        user.setName("Tingran");
-//        user.setPass("helloworld");
-//        ManageEntity.insertUser(user);
-//        System.out.println("插入User成功");
-
-//        GetUrl url = new GetUrl();
-//        url.setTitle("杀人啦");
-//        url.setUrl("http://www.baidu.com");
-//        url.setDate(new Date());
-//        ManageEntity.insertGetUrl(url);
-//        System.out.println("插入URL成功");
-//
-//        TargetUrl targetUrl = new TargetUrl();
-//        targetUrl.setUrl("http://www.baidu.com");
-//        ManageEntity.insertTargetUrl(targetUrl);
-//        System.out.println("插入TargetURL成功");
-
-//        manageEntity.destroy();
-    }
 }

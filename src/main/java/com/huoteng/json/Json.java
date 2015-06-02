@@ -4,8 +4,6 @@ import java.util.List;
 
 /**
  * 将查询的返回值转换为JSON格式并返回
- * 定义函数：
- * 1.将给定数据转换为json格式返回
  * Created by huoteng on 6/1/15.
  */
 public class Json {
@@ -16,6 +14,13 @@ public class Json {
      * @return json格式String
      */
     public static String changeUrlListToJson(List urls) {
+        String result;
+
+        //遍历urls
+        for (Object o : urls) {
+
+        }
+
         return null;
     }
 

@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by huoteng on 5/28/15.
+ * Created by huoteng on 6/2/15.
  */
 @Entity
-@Table(name = "get-url", catalog = "search")
-public class GetUrl {
+@Table(name = "got_url", schema = "", catalog = "search")
+public class GotUrl {
     private int id;
     private String url;
-    private Date date;
+    private Date data;
     private String title;
 
     @Id
@@ -35,13 +35,13 @@ public class GetUrl {
     }
 
     @Basic
-    @Column(name = "date")
-    public Date getDate() {
-        return date;
+    @Column(name = "data")
+    public Date getData() {
+        return data;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setData(Date data) {
+        this.data = data;
     }
 
     @Basic
@@ -59,12 +59,12 @@ public class GetUrl {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GetUrl getUrl = (GetUrl) o;
+        GotUrl gotUrl = (GotUrl) o;
 
-        if (id != getUrl.id) return false;
-        if (url != null ? !url.equals(getUrl.url) : getUrl.url != null) return false;
-        if (date != null ? !date.equals(getUrl.date) : getUrl.date != null) return false;
-        if (title != null ? !title.equals(getUrl.title) : getUrl.title != null) return false;
+        if (id != gotUrl.id) return false;
+        if (url != null ? !url.equals(gotUrl.url) : gotUrl.url != null) return false;
+        if (data != null ? !data.equals(gotUrl.data) : gotUrl.data != null) return false;
+        if (title != null ? !title.equals(gotUrl.title) : gotUrl.title != null) return false;
 
         return true;
     }
@@ -73,7 +73,7 @@ public class GetUrl {
     public int hashCode() {
         int result = id;
         result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (data != null ? data.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
     }

@@ -3,10 +3,10 @@ package com.huoteng.entity;
 import javax.persistence.*;
 
 /**
- * Created by huoteng on 5/28/15.
+ * Created by huoteng on 6/2/15.
  */
 @Entity
-@Table(name = "target-url", catalog = "search")
+@Table(name = "target_url", schema = "", catalog = "search")
 public class TargetUrl {
     private int id;
     private String url;

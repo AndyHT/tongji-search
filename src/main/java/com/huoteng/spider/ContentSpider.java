@@ -4,6 +4,10 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 抓取content爬虫
  * Created by huoteng on 5/26/15.
@@ -13,7 +17,7 @@ public class ContentSpider implements PageProcessor {
 
     private String content;
 
-    private String date;
+    private Date date;
 
     private Site sseSite = Site.me().setRetryTimes(3).setSleepTime(1000);
 
@@ -21,7 +25,14 @@ public class ContentSpider implements PageProcessor {
 
         //将content里的web标签去掉
         content = ContentSpider.splitAndFilterString(contentPage.getHtml().css("div.content").get());
-        date = ContentSpider.splitAndFilterString(contentPage.getHtml().css("span.date").get());
+        String dateStr = ContentSpider.splitAndFilterString(contentPage.getHtml().css("span.date").get());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            date = dateFormat.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -45,7 +56,7 @@ public class ContentSpider implements PageProcessor {
         return content;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 }

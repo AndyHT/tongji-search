@@ -1,11 +1,11 @@
 package com.huoteng.spider;
 
+import com.huoteng.model.Article;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +58,7 @@ public class NewsSpider implements PageProcessor {
                 Spider.create(contentSpider).addUrl(url).thread(1).run();
 
                 String newsContent = contentSpider.getContent();
-                String newsDate = contentSpider.getDate();
+                Date newsDate = contentSpider.getDate();
 
                 articles.add(new Article(url, title, newsContent, newsDate));
             }

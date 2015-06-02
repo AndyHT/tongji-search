@@ -50,7 +50,7 @@ public class ManageEntity {
         transaction = session.beginTransaction();
     }
 
-    public static void insertGetUrl(GetUrl aUrl) {
+    public static void insertGetUrl(GotUrl aUrl) {
 
         begin();
 

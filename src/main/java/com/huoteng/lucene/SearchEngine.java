@@ -1,6 +1,6 @@
 package com.huoteng.lucene;
 
-import com.huoteng.spider.Article;
+import com.huoteng.model.Article;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -12,7 +12,9 @@ import org.apache.lucene.util.Version;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * 索引查找
@@ -53,12 +55,15 @@ public class SearchEngine {
 
             for(int i = 0; i < topDocs.totalHits; ++i) {
                 Document targetDoc = searcher.doc(scoreDocs[i].doc);
-                System.out.println("url:" + targetDoc.getField("url").stringValue());
-                System.out.println("title:" + targetDoc.getField("title").stringValue());
+//                System.out.println("url:" + targetDoc.getField("url").stringValue());
+//                System.out.println("title:" + targetDoc.getField("title").stringValue());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = dateFormat.parse(targetDoc.getField("date").stringValue());
+
                 searchResultList.add(new Article(targetDoc.getField("url").stringValue(),
                         targetDoc.getField("title").stringValue(),
                         targetDoc.getField("title-date-content").stringValue(),
-                        targetDoc.getField("date").stringValue()));
+                        date));
             }
 
             return searchResultList;
@@ -66,9 +71,11 @@ public class SearchEngine {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
         }
 
-        return null;
+        return searchResultList;
     }
 
 

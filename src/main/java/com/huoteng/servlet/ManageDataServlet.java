@@ -30,37 +30,38 @@ public class ManageDataServlet extends HttpServlet {
         String content = request.getParameter("content");
 
         boolean isSuccess = false;
+        HibernateController hibernate = new HibernateController();
         String data = "";
         if (order.equals("add")) {
             //根据content增加TargetURL
-            if (HibernateController.init() && HibernateController.begin()) {
-                isSuccess = HibernateController.addNewTargetURL(content);
+            if (hibernate.begin()) {
+                hibernate.addNewTargetURL(content);
+                isSuccess = true;
             }
         } else if (order.equals("deleteGot")) {
             //根据content删除GotURL
-            if (HibernateController.init() && HibernateController.begin()) {
-                List gotURL = HibernateController.deleteGotURLbyID(content);
+            if (hibernate.begin()) {
+                int deletedNumber = hibernate.deleteGotURLbyID(Integer.parseInt(content));
                 //将返回的List转为String
-                data = Json.changeUrlListToJson(gotURL);
+                data += deletedNumber;
 
                 isSuccess = true;
             }
 
         } else if (order.equals("deleteTarget")) {
             //根据content删除TargetURL
-            if (HibernateController.init() && HibernateController.begin()) {
-                List targetURl = HibernateController.deleteTargetURLbyID(content);
-                //将返回的List转为String
-                data = Json.changeUrlListToJson(targetURl);
+            if (hibernate.begin()) {
+                int deletedNumber = hibernate.deleteTargetURLbyID(Integer.parseInt(content));
+                data += deletedNumber;
 
                 isSuccess = true;
             }
         } else if (order.equals("update")) {
             //刷新页面数据,返回data
-            if (HibernateController.init() && HibernateController.begin()) {
+            if (hibernate.begin()) {
 
-                List urls = HibernateController.findAllGotURL();
-                urls.addAll(HibernateController.findAllTargetURL());
+                List urls = hibernate.findAllGotURL();
+                urls.addAll(hibernate.findAllTargetURL());
                 data = Json.changeUrlListToJson(urls);
 
                 isSuccess = true;

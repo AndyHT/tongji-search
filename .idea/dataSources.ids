@@ -7,17 +7,17 @@
     </database-info>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
     <schema name="" catalog="search"/>
-    <table name="get-url" schema="" catalog="search" type="TABLE">
+    <table name="got_url" schema="" catalog="search" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="url" sqlType="VARCHAR" precision="60" scale="0" nullable="false" jdbcType="12"/>
-      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
-      <column name="title" sqlType="MEDIUMTEXT" precision="16777215" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="data" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="title" sqlType="VARCHAR" precision="60" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
       <index name="url_UNIQUE" unique="true" columns="url"/>
     </table>
-    <table name="target-url" schema="" catalog="search" type="TABLE">
+    <table name="target_url" schema="" catalog="search" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="url" sqlType="VARCHAR" precision="60" scale="0" nullable="false" jdbcType="12"/>
+      <column name="url" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
       <index name="url_UNIQUE" unique="true" columns="url"/>
     </table>

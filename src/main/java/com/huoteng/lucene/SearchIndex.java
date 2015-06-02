@@ -14,6 +14,7 @@ import org.apache.lucene.util.Version;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * 索引
@@ -27,7 +28,7 @@ public class SearchIndex {
      * @param title 文章的title
      * @return 建立索引是否成功
      */
-    public boolean createIndex(String url, String title, String content, String date, Directory directory) {
+    public boolean createIndex(String url, String title, String content, Date date, Directory directory) {
         boolean success = false;
 
         IndexWriter writer;
@@ -40,12 +41,14 @@ public class SearchIndex {
             config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
             writer = new IndexWriter(directory, config);
 
+            String dateStr = date.toString();
+
             //写入索引
             Document doc = new Document();
             doc.add(new StringField("url", url, Field.Store.YES));
             doc.add(new StringField("title", title, Field.Store.YES));
-            doc.add(new StringField("date", date, Field.Store.YES));
-            doc.add(new TextField("title-date-content", title + "," + date + "," + content, Field.Store.YES));
+            doc.add(new StringField("date", dateStr, Field.Store.YES));
+            doc.add(new TextField("title-date-content", title + "," + dateStr + "," + content, Field.Store.YES));
             writer.addDocument(doc);
             writer.close();
 

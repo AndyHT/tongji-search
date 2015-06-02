@@ -3,7 +3,7 @@ package com.huoteng.servlet;
 import com.huoteng.controller.SpiderController;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchIndex;
-import com.huoteng.spider.Article;
+import com.huoteng.model.Article;
 import com.huoteng.spider.NewsSpider;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
@@ -54,6 +54,10 @@ public class StartSpiderServlet extends HttpServlet {
             spiderController.startSpider(spider);
 
             ArrayList articles = spider.getArticles();
+
+            //将articles存入数据库
+
+
 
             boolean isSuccess = false;
             for (Object object : articles) {

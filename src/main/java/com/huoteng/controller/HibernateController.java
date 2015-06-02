@@ -1,13 +1,15 @@
 package com.huoteng.controller;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import com.huoteng.entity.GotUrl;
+import com.huoteng.entity.TargetUrl;
+import com.huoteng.entity.Users;
+import com.huoteng.model.Article;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,35 +19,13 @@ import java.util.List;
  */
 public class HibernateController {
 
-    /**
-     * 学习Hibernate数据库操作
-     * @param name
-     * @param session
-     * @return
-     */
-    public List findCoustomerByName(String name,Session session) {
-        //创建一个Query对象
-        Query query = session.createQuery("from GetUrl as c left join fetch c.id" +
-                " where c.id=:customerName" +
-                " and c.url=:customerAge");
-
-        //动态绑定参数。Query接口提供了给各种类型的命名参数复制的方法，例如setString()方法用于为字符串类型的customerName命名参数赋值
-        query.setString("customerName",name);
-        query.setString("customerAge", "21");
-        //执行查询，返回结果
-        return query.list();
-    }
-
-
     private static SessionFactory factory;
-    private static Session session;
-    private static Transaction transaction;
-    private static boolean isNeedClose = false;
+    private Session session;
+    private Transaction transaction;
+//    private boolean isNeedClose = false;
 
-    public static boolean init() {
-        boolean success = false;
-
-        if (null == factory) {
+    static{
+        try {
             //创建配置对象
             Configuration config = new Configuration().configure();
 
@@ -55,52 +35,44 @@ public class HibernateController {
 
             //创建会话工厂对象
             factory = config.buildSessionFactory(registry);
-            success = true;
-        } else {
-            success = true;
+        } catch (Throwable e) {
+            System.err.println("Initial SessionFactory creation failed." + e);
         }
-
-        return success;
     }
 
-    public static boolean begin() {
+    public boolean begin() {
         boolean success = false;
-
-        /**
-         * 还需要深入了解hibernate的session和transaction机制
-         */
-        if (null == session || null == transaction) {
-            //创建会话对象
+        try {
             session = factory.getCurrentSession();
-            if (session == null) {
-                session =factory.openSession();
-                isNeedClose = true;
-            }
-
-            //开启事务
             transaction = session.beginTransaction();
-            success = true;
-        } else {
-            success = true;
-        }
 
+            success = true;
+        } catch (HibernateException e) {
+            System.out.println("get current session fail");
+            e.printStackTrace();
+        }
         return success;
     }
+
 
     /**
      * 1.得到所有TargetURL
      * @return All TargetURL List
      */
-    public static List findAllTargetURL() {
-        return null;
+    public List findAllTargetURL() {
+        Query targetURLQuery = session.createQuery("from TargetUrl");
+
+        return targetURLQuery.list();
     }
 
     /**
      * 2.得到所有GotURL
      * @return All GotURL List
      */
-    public static List findAllGotURL() {
-        return null;
+    public List findAllGotURL() {
+        Query gotURLQuery = session.createQuery("from GotUrl ");
+
+        return gotURLQuery.list();
     }
 
     /**
@@ -109,10 +81,18 @@ public class HibernateController {
      * @param pass 密码
      * @return 匹配是否成功
      */
-    public static boolean isUser(String name, String pass) {
+    public boolean isUser(String name, String pass) {
         boolean isUser = false;
 
+        Query userQuery = session.createQuery("from Users");
+        List users = userQuery.list();
 
+        for (Object user : users) {
+            if (name.equals(((Users) user).getName()) && pass.equals(((Users) user).getPass())) {
+                isUser = true;
+                break;
+            }
+        }
         return isUser;
     }
 
@@ -121,8 +101,12 @@ public class HibernateController {
      * @param id id
      * @return 删除的TargetURL List
      */
-    public static List deleteTargetURLbyID(String id) {
-        return null;
+    public int deleteTargetURLbyID(int id) {
+        Query deleteQuery = session.createQuery("delete from TargetUrl where id = ?");
+        deleteQuery.setInteger(0, id);
+        int deletedNumber = deleteQuery.executeUpdate();
+        transaction.commit();
+        return deletedNumber;
     }
 
     /**
@@ -130,17 +114,35 @@ public class HibernateController {
      * @param id id
      * @return 删除的GotURL List
      */
-    public static List deleteGotURLbyID(String id) {
-        return null;
+    public int deleteGotURLbyID(int id) {
+        Query deletedQuery = session.createQuery("delete from GotUrl where id = ?");
+        deletedQuery.setInteger(0, id);
+        int deletedNumber = deletedQuery.executeUpdate();
+        transaction.commit();
+        return deletedNumber;
     }
 
     /**
      * 6.新增一条TargetURL
      * @param url new URL
-     * @return 是否成功
      */
-    public static boolean addNewTargetURL(String url) {
-        boolean success = false;
-        return success;
+    public void addNewTargetURL(String url) {
+        TargetUrl targetUrl = new TargetUrl();
+        targetUrl.setUrl(url);
+
+        session.save(targetUrl);
+        transaction.commit();
+    }
+
+    public void addGotURL(ArrayList gotUrls) {
+        for (Object object : gotUrls) {
+            GotUrl gotUrl = new GotUrl();
+            gotUrl.setUrl(((Article) object).url);
+            gotUrl.setTitle(((Article) object).title);
+            gotUrl.setData(((Article) object).date);
+
+            session.save(gotUrl);
+        }
+        transaction.commit();
     }
 }

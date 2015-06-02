@@ -14,13 +14,13 @@ web in ~/Desktop/search
 * IKAnalyzer 2012FF
 
 ####Spider
-* Webmagic
+* Webmagic 0.5.2
 
 ####Database
-* MySQL
+* MySQL 5.6.23
 
 ####DB connect
-* Hibernate
+* Hibernate 4.2.2.Final
 
 ##项目进度：
 ###前端部分

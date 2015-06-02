@@ -3,7 +3,6 @@ package com.huoteng.servlet;
 import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
-import com.huoteng.spider.Article;
 import org.apache.lucene.store.Directory;
 
 import javax.servlet.ServletException;
