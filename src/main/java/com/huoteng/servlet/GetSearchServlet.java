@@ -35,6 +35,7 @@ public class GetSearchServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String keyword = request.getParameter("key");
+        System.out.println("key:" + keyword);
 
         //根据keyword查询
         SearchEngine engine = new SearchEngine();

@@ -2,22 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>search</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/cover.css">
-    <link rel="stylesheet" href="styles/search-content.css">
-    <!-- endbuild -->
-    <script src="bower_components/modernizr/modernizr.js"></script>
-    <!-- endbuild -->
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Cover Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="styles/cover.css" rel="stylesheet">
+    <link href="styles/index.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="scripts/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
 
   <body>
@@ -45,8 +54,8 @@
               <img src="images/logo.png">
             </div>
             <div class="search-box">
-              <form id="search-form" class="search-form" action="http://localhost:8080/getrequest/" target="_blank" method="get">
-                <input type="text" name="action=search&query" placeholder="搜索同济" class="search-input-text" id="search-input">
+              <form id="search-form" class="form-signin search-form" action="http://localhost:8080/s" target="_blank" method="get">
+                <input type="text" name="key" placeholder="搜索同济" class="form-control search-input-text" id="search-input">
                 <input type="submit" value="" class="search-input-btn">
               </form>
             </div>  
@@ -60,7 +69,7 @@
 
           <div class="mastfoot">
             <div class="inner">
-              <p><a href="http://localhost:9000">同济搜索</a>, 专注于更好的校内搜索</p>
+              <p><a href="http://localhost:8080">同济搜索</a>, 专注于更好的校内搜索</p>
             </div>
           </div>
 
@@ -70,55 +79,41 @@
 
     </div>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-
-        <!-- build:js({app,.tmp}) scripts/main.js -->
-        <script src="scripts/main.js"></script>
-        <!-- endbuild -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="scripts/ie10-viewport-bug-workaround.js"></script>
+    
     <script>
-      $('#search-input').bind('keyup',function(){
-        var searchText = $('#search-input').val();
-        $.get('http://localhost:8080/getrequest?action=ajax&query='+searchText,function(data){
-          console.log(data);
-          var content = data.name;
-          console.log(content);
-          content = '<li>' + content + '</li>';
-          $('#search-suggest').html(content);
-          $('#search-suggest').show().css({
-          top:$('#search-form').offset().top + $('#search-form').height()+10,
-          left:$('#search-form').offset().left,
-          position:'absolute'
-        });
-      },'json');
-    });
-    $(document).bind('click',function(){
-      $('#search-suggest').hide();
-    })
-    $(document).ready(function(){
-      $.get('http://localhost:8080/newMessage',function(newMessage){
-        //解析newMessage
-        $('#new-message').show().css({
-          //newMessage的位置
-          //请求newMessage失败了怎么办？
-        });
-      },'json')
-    });
-  </script>
+      // $('#search-input').bind('keyup',function(){
+      //   var searchText = $('#search-input').val();
+      //   $.get('http://localhost:8080/s?key='+searchText,function(data){
+      //     console.log(data);
+      //     // var content = data.name;
+      //     // console.log(content);
+      //     // content = '<li>' + content + '</li>';
+      //     // $('#search-suggest').html(content);
+      //     // $('#search-suggest').show().css({
+      //     // top:$('#search-form').offset().top + $('#search-form').height()+10,
+      //     // left:$('#search-form').offset().left,
+      //     // position:'absolute'
+      //   });
+      // },'json');
+    // });
+    // $(document).bind('click',function(){
+    //   $('#search-suggest').hide();
+    // })
+    // $(document).ready(function(){
+    //   $.get('http://localhost:8080/newMessage',function(newMessage){
+    //     //解析newMessage
+    //     $('#new-message').show().css({
+    //       //newMessage的位置
+    //       //请求newMessage失败了怎么办？
+    //     });
+    //   },'json')
+    // });>
   </body>
 </html>

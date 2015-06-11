@@ -30,8 +30,6 @@ web in ~/Desktop/search
 
 ###服务器端
 * 需要完成Servlet以实现Ajax
-* 需要完成数据json格式转换
-* 如何使用Hibernate完成数据库的查询
 
 ###搜索引擎核心
 * completed!

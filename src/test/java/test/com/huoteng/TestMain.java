@@ -7,7 +7,10 @@ import com.huoteng.model.Article;
 import com.huoteng.spider.NewsSpider;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.SimpleFSDirectory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -16,10 +19,17 @@ import java.util.ArrayList;
  */
 public class TestMain {
     public static void main(String[] args) {
-        createIndex();
+        try {
+            createIndex();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void createIndex() {
+    public static void createIndex() throws IOException {
+//        File indexFile = new File("/Users/huoteng/Documents/index/");
+//
+//        Directory directory = new SimpleFSDirectory(indexFile);
         Directory directory = new RAMDirectory();
 
         NewsSpider spider = new NewsSpider();
@@ -41,7 +51,7 @@ public class TestMain {
             index.createIndex(article.url, article.title, article.content, article.date, directory);
         }
 
-        engine.search("2013级本科生", directory);
+        engine.search("2015届", directory);
 
     }
 

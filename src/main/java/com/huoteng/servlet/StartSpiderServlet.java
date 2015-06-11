@@ -36,7 +36,7 @@ public class StartSpiderServlet extends HttpServlet {
             Directory directory = IndexDirectory.getDirectory();
             if (directory == null) {
 
-                File indexFile = new File("/User/huoteng/Documents/index/");
+                File indexFile = new File("/Users/huoteng/Documents/index/");
                 
                 if (indexFile.isDirectory()) {
                     IndexDirectory.setIndexFile(indexFile);
