@@ -29,6 +29,7 @@ public class ManageDataServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String order = request.getParameter("order");
         String content = request.getParameter("content");
+        System.out.println("got order:" + order);
 
         boolean isSuccess = false;
         HibernateController hibernate = new HibernateController();
@@ -64,9 +65,9 @@ public class ManageDataServlet extends HttpServlet {
                 List urls = hibernate.findAllGotURL();
                 try {
                     data += Json.changeUrlListToJson(urls, true);
-                    urls.clear();
-                    urls = hibernate.findAllTargetURL();
-                    data += Json.changeUrlListToJson(urls, false);
+//                    urls.clear();
+//                    urls = hibernate.findAllTargetURL();
+//                    data += Json.changeUrlListToJson(urls, false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -80,10 +81,7 @@ public class ManageDataServlet extends HttpServlet {
         //完成后应答前端
         OutputStream out = response.getOutputStream();
 
-        //需要把resp改成json格式
-        String resp = Boolean.toString(isSuccess) + "," + order + "," + data;
-
-        out.write(resp.getBytes());
+        out.write(data.getBytes());
         out.close();
 
     }

@@ -42,7 +42,7 @@ public class SearchEngine {
             searcher = new IndexSearcher(reader);
 
             //使用QueryParser查询分析器构造Query对象
-            QueryParser queryParse = new QueryParser(Version.LUCENE_40, "title-content", analyzer);
+            QueryParser queryParse = new QueryParser(Version.LUCENE_40, "title-date-content", analyzer);
             queryParse.setDefaultOperator(QueryParser.AND_OPERATOR);
             Query query = queryParse.parse(keyword);
             System.out.println("Query = " + query);
@@ -55,9 +55,10 @@ public class SearchEngine {
 
             for(int i = 0; i < topDocs.totalHits; ++i) {
                 Document targetDoc = searcher.doc(scoreDocs[i].doc);
-//                System.out.println("url:" + targetDoc.getField("url").stringValue());
-//                System.out.println("title:" + targetDoc.getField("title").stringValue());
+                System.out.println("url:" + targetDoc.getField("url").stringValue());
+                System.out.println("title:" + targetDoc.getField("title").stringValue());
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//                System.out.println("date:" + targetDoc.getField("date").stringValue());
                 Date date = dateFormat.parse(targetDoc.getField("date").stringValue());
 
                 searchResultList.add(new Article(targetDoc.getField("url").stringValue(),

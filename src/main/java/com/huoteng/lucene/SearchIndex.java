@@ -14,6 +14,8 @@ import org.apache.lucene.util.Version;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -41,7 +43,12 @@ public class SearchIndex {
             config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
             writer = new IndexWriter(directory, config);
 
-            String dateStr = date.toString();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String dateStr = dateFormat.format(date);
+//            System.out.println("****************");
+//            System.out.println("dateStr:" + dateStr);
+//            System.out.println("****************");
+
 
             //写入索引
             Document doc = new Document();

@@ -118,10 +118,22 @@
           dataType: 'json'});
       };
       
+      $('document').ready(function () {
+        console.log("start load data");
+        var loadList = {'order': 'update', 'content': ''};
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:8080/manage-data/',
+          data: loadList,
+          success: function (data) {
+            addOriginUrl(data);
+          },
+          dataType: 'json'});
+      });
+      
+      //向origin list中添加URL
       function addOriginUrl(urlList) {
-        //向origin list中添加URL
         console.log(urlList);
-        
         for (var index = 0; index < urlList.length; index++) {
           var article = urlList[index];
           var temp = '<tr><td>' + index + '</td><td>' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td></tr>';
@@ -130,9 +142,10 @@
         $('#start-spider').disabled = false;
       }
       
-      function addTargetUrl(urlList) {
-        //向target list中添加URL
-      }
+      //向target list中添加URL  
+      // function addTargetUrl(urlList) {
+        
+      // }
     </script>
   </body>
 </html>

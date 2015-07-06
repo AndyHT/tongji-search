@@ -4,12 +4,14 @@ import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.SimpleFSDirectory;
 import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -39,28 +41,52 @@ public class GetSearchServlet extends HttpServlet {
 
         //根据keyword查询
         SearchEngine engine = new SearchEngine();
+//        Directory directory = IndexDirectory.getDirectory();
+//
+//        if (directory == null) {
+//            System.out.println("directory is null");
+//        }
+
         Directory directory = IndexDirectory.getDirectory();
+        if (directory == null) {
+
+            File indexFile = new File("/Users/huoteng/Documents/index/");
+
+            if (indexFile.isDirectory()) {
+                IndexDirectory.setIndexFile(indexFile);
+                directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
+                IndexDirectory.setDirectory(directory);
+            }
+            System.out.println("got directory");
+        }
+
         ArrayList result;
         if (directory != null) {
             result = engine.search(keyword, directory);
 
+            request.setAttribute("result", result);
+            request.getRequestDispatcher("result.jsp").forward(request, response);
+            System.out.println("result:" + result);
+            System.out.println("go to result.jsp");
+
             //将result转为json
-            String jsonResult = null;
-            try {
-                jsonResult = Json.changeArticleListToJson(result);
-
-                response.addHeader("Content-Type", "text/json;charset=utf-8");
-                response.addHeader("Cache-Control", "private");
-
-                OutputStream out = response.getOutputStream();
-                out.write(jsonResult.getBytes());
-                out.close();
-
-                //跳转到result.jsp
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+//            String jsonResult = null;
+//            try {
+//                jsonResult = Json.changeArticleListToJson(result);
+//
+//                response.addHeader("Content-Type", "text/json;charset=utf-8");
+//                response.addHeader("Cache-Control", "private");
+//
+////                OutputStream out = response.getOutputStream();
+////                out.write(jsonResult.getBytes());
+////                out.close();
+//
+//                //跳转到result.jsp
+//                request.setAttribute("result", jsonResult);
+//                request.getRequestDispatcher("result.jsp").forward(request, response);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 }

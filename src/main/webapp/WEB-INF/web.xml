@@ -38,7 +38,7 @@
 
     <servlet-mapping>
         <servlet-name>ManageDataServlet</servlet-name>
-        <url-pattern>/managedata/</url-pattern>
+        <url-pattern>/manage-data/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>

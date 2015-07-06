@@ -1,6 +1,7 @@
 package test.com.huoteng;
 
 import com.huoteng.controller.SpiderController;
+import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
 import com.huoteng.lucene.SearchIndex;
 import com.huoteng.model.Article;
@@ -28,9 +29,21 @@ public class TestMain {
 
     public static void createIndex() throws IOException {
 //        File indexFile = new File("/Users/huoteng/Documents/index/");
-//
-//        Directory directory = new SimpleFSDirectory(indexFile);
-        Directory directory = new RAMDirectory();
+
+//        Directory directory = new RAMDirectory();
+
+        Directory directory = IndexDirectory.getDirectory();
+        if (directory == null) {
+
+            File indexFile = new File("/Users/huoteng/Documents/index/");
+
+            if (indexFile.isDirectory()) {
+                IndexDirectory.setIndexFile(indexFile);
+                directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
+                IndexDirectory.setDirectory(directory);
+            }
+            System.out.println("got directory");
+        }
 
         NewsSpider spider = new NewsSpider();
         SearchEngine engine = new SearchEngine();
@@ -51,7 +64,7 @@ public class TestMain {
             index.createIndex(article.url, article.title, article.content, article.date, directory);
         }
 
-        engine.search("2015届", directory);
+        engine.search("毕业生", directory);
 
     }
 

@@ -78,7 +78,7 @@ public class StartSpiderServlet extends HttpServlet {
                 System.out.println("date:" + article.date);
                 System.out.println();
 
-                index.createIndex(article.url, article.title, article.content, article.date, new RAMDirectory());
+                index.createIndex(article.url, article.title, article.content, article.date, directory);
             }
 
             response.addHeader("Content-Type", "text/javascript;charset=utf-8");
