@@ -64,29 +64,27 @@ public class GetSearchServlet extends HttpServlet {
         if (directory != null) {
             result = engine.search(keyword, directory);
 
-            request.setAttribute("result", result);
-            request.getRequestDispatcher("result.jsp").forward(request, response);
-            System.out.println("result:" + result);
-            System.out.println("go to result.jsp");
+//            System.out.println("go to result.jsp");
+//            request.setAttribute("result", result);
+//            request.getRequestDispatcher("result.jsp").forward(request, response);
+//            System.out.println("result:" + result);
 
             //将result转为json
-//            String jsonResult = null;
-//            try {
-//                jsonResult = Json.changeArticleListToJson(result);
-//
-//                response.addHeader("Content-Type", "text/json;charset=utf-8");
-//                response.addHeader("Cache-Control", "private");
-//
-////                OutputStream out = response.getOutputStream();
-////                out.write(jsonResult.getBytes());
-////                out.close();
-//
-//                //跳转到result.jsp
-//                request.setAttribute("result", jsonResult);
-//                request.getRequestDispatcher("result.jsp").forward(request, response);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+            String jsonResult = null;
+            try {
+                jsonResult = Json.changeArticleListToJson(result);
+
+                response.addHeader("Content-Type", "text/json;charset=utf-8");
+                response.addHeader("Cache-Control", "private");
+
+                OutputStream out = response.getOutputStream();
+                out.write(jsonResult.getBytes());
+                out.close();
+
+                //跳转到result.html
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
