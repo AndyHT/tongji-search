@@ -23,6 +23,7 @@ web in ~/Desktop/search
 * Hibernate 4.2.2.Final
 
 ##项目进度：
+进行集合测试，完成项目
 ###前端部分
 * 找一张足够分辨率的背景图
 * 需要完成manage页面、搜索结果页面

@@ -48,16 +48,19 @@ public class GetSearchServlet extends HttpServlet {
             String jsonResult = null;
             try {
                 jsonResult = Json.changeArticleListToJson(result);
+
+                response.addHeader("Content-Type", "text/json;charset=utf-8");
+                response.addHeader("Cache-Control", "private");
+
+                OutputStream out = response.getOutputStream();
+                out.write(jsonResult.getBytes());
+                out.close();
+
+                //跳转到result.jsp
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            response.addHeader("Content-Type", "text/json;charset=utf-8");
-            response.addHeader("Cache-Control", "private");
-
-            OutputStream out = response.getOutputStream();
-            out.write(jsonResult.getBytes());
-            out.close();
         }
     }
 }

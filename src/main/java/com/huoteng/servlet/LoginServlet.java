@@ -18,6 +18,7 @@ public class LoginServlet extends HttpServlet {
         String user = request.getParameter("user");
         String password = request.getParameter("pass");
 
+        System.out.println("get login message," + user + "," + password);
         //访问数据库判断用户是否存在
         HibernateController hibernat = new HibernateController();
         if (hibernat.begin()) {
@@ -33,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         }
 
 
-//        if (user.equals("admin") && password.equals("admin")) {
+//        if (user.equals("admin@qq.com") && password.equals("admin")) {
 //            HttpSession loginSession = request.getSession();
 //            loginSession.setAttribute("username",user);
 //            response.sendRedirect(request.getContextPath() + "/manage.html");

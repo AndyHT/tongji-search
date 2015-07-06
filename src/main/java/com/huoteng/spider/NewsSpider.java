@@ -41,7 +41,7 @@ public class NewsSpider implements PageProcessor {
         String title;
 
         for (String aNews : newsList) {
-//            System.out.println(aNews);
+            System.out.println(aNews);
 
             urlMatcher = urlPattern.matcher(aNews);
             titleMatcher = titlePattern.matcher(aNews);
@@ -50,8 +50,8 @@ public class NewsSpider implements PageProcessor {
                 url = urlMatcher.group();
                 title = titleMatcher.group();
                 title = title.replaceAll("[></a>]", "");
-//                System.out.println("URL:" + url);
-//                System.out.println("Title:" + title);
+                System.out.println("URL:" + url);
+                System.out.println("Title:" + title);
 
                 //异步的方式去拿content
                 ContentSpider contentSpider = new ContentSpider();

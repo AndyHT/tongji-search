@@ -36,8 +36,8 @@ public class TestMain {
         SearchEngine engine = new SearchEngine();
         SearchIndex index = new SearchIndex();
 
-        SpiderController sController = new SpiderController();
-        sController.startSpider(spider);
+        SpiderController spiderController = new SpiderController();
+        spiderController.startSpider(spider);
 
         ArrayList articles = spider.getArticles();
 

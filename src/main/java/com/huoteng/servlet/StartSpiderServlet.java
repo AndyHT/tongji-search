@@ -1,17 +1,23 @@
 package com.huoteng.servlet;
 
+import com.huoteng.controller.HibernateController;
 import com.huoteng.controller.SpiderController;
+import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
+import com.huoteng.lucene.SearchEngine;
 import com.huoteng.lucene.SearchIndex;
 import com.huoteng.model.Article;
 import com.huoteng.spider.NewsSpider;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
+import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,18 +38,20 @@ public class StartSpiderServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String order = request.getParameter("start");
+        System.out.println("spider start:" + order);
+
         if (Boolean.valueOf(order)) {
             Directory directory = IndexDirectory.getDirectory();
             if (directory == null) {
 
                 File indexFile = new File("/Users/huoteng/Documents/index/");
-                
+
                 if (indexFile.isDirectory()) {
                     IndexDirectory.setIndexFile(indexFile);
                     directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
                     IndexDirectory.setDirectory(directory);
                 }
-                
+
             }
 
             //启动爬虫建立索引
@@ -52,17 +60,25 @@ public class StartSpiderServlet extends HttpServlet {
 
             SpiderController spiderController = new SpiderController();
             spiderController.startSpider(spider);
+            System.out.println("Spider started");
 
             ArrayList articles = spider.getArticles();
+            System.out.println("got articles");
 
-            //将articles存入数据库
-
-
-
-            boolean isSuccess = false;
+            //存数据库
+            HibernateController hibernat = new HibernateController();
+            if (hibernat.begin()) {
+                hibernat.addGotURL(articles);
+            }
+            //创建index
             for (Object object : articles) {
                 Article article = (Article)object;
-                isSuccess = index.createIndex(article.url, article.title, article.content, article.date, directory);
+                System.out.println("url:" + article.url);
+                System.out.println("title:" + article.title);
+                System.out.println("date:" + article.date);
+                System.out.println();
+
+                index.createIndex(article.url, article.title, article.content, article.date, new RAMDirectory());
             }
 
             response.addHeader("Content-Type", "text/javascript;charset=utf-8");
@@ -71,12 +87,16 @@ public class StartSpiderServlet extends HttpServlet {
             //完成后应答前端,前端发送刷新list请求
             OutputStream out = response.getOutputStream();
 
-            //需要json格式
-            String resp = Boolean.toString(isSuccess) + "," + order;
+            String resp = null;
+            try {
+                resp = Json.changeArticleListToJson(articles);
+                out.write(resp.getBytes());
+                out.close();
 
-            out.write(resp.getBytes());
-            out.close();
-
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 }

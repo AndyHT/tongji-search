@@ -45,11 +45,6 @@ body {
 /*  text-align: center;*/
   border-bottom: 1px solid #e5e5e5;
 }
-.manage .btn {
-  padding: 14px 24px;
-  font-size: 21px;
-}
-
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
@@ -67,4 +62,16 @@ body {
   .manage {
     border-bottom: 0;
   }
+}
+.spider-title {
+  float: left;
+}
+.spider {
+  float: right;
+}
+.manage-title {
+  float: left;
+}
+.manage-btn {
+  float: right;
 }
