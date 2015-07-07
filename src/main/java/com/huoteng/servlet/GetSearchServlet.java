@@ -41,11 +41,6 @@ public class GetSearchServlet extends HttpServlet {
 
         //根据keyword查询
         SearchEngine engine = new SearchEngine();
-//        Directory directory = IndexDirectory.getDirectory();
-//
-//        if (directory == null) {
-//            System.out.println("directory is null");
-//        }
 
         Directory directory = IndexDirectory.getDirectory();
         if (directory == null) {
@@ -61,29 +56,27 @@ public class GetSearchServlet extends HttpServlet {
         }
 
         ArrayList result;
-        if (directory != null) {
-            result = engine.search(keyword, directory);
+        result = engine.search(keyword, directory);
 
 //            System.out.println("go to result.jsp");
 //            request.setAttribute("result", result);
 //            request.getRequestDispatcher("result.jsp").forward(request, response);
 //            System.out.println("result:" + result);
 
-            //将result转为json
-            String jsonResult = null;
-            try {
-                jsonResult = Json.changeArticleListToJson(result);
+        //将result转为json
+        String jsonResult = null;
+        try {
+            jsonResult = Json.changeArticleListToJson(result);
 
-                response.addHeader("Content-Type", "text/json;charset=utf-8");
-                response.addHeader("Cache-Control", "private");
+            response.addHeader("Content-Type", "text/json;charset=utf-8");
+            response.addHeader("Cache-Control", "private");
 
-                OutputStream out = response.getOutputStream();
-                out.write(jsonResult.getBytes());
-                out.close();
+            OutputStream out = response.getOutputStream();
+            out.write(jsonResult.getBytes());
+            out.close();
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

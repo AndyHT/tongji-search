@@ -85,7 +85,9 @@
       $(document).keydown(function (event) {
         if (event.which == 13) {
           console.log('start search');
-          $.ajax({
+          var searchKey = $('#search-input').val();
+          if (searchKey !== '') {
+            $.ajax({
             type: 'GET',
             url: 'http://localhost:8080/s?key=' + $('#search-input').val(),
             success: function (data) {
@@ -93,6 +95,9 @@
               loadResultPage(data);
             }
           });
+          } else {
+            alert('请输入您想搜索的内容');
+          }
         }
       })
       
