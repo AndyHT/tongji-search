@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 启动爬虫
@@ -59,7 +60,18 @@ public class StartSpiderServlet extends HttpServlet {
             SearchIndex index = new SearchIndex();
 
             SpiderController spiderController = new SpiderController();
-            spiderController.startSpider(spider);
+
+            //从数据库里那URL
+            HibernateController hibernate = new HibernateController();
+            String url = "http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx";
+            if (hibernate.begin()) {
+                List urls = hibernate.findAllTargetURL();
+                for (Object temp : urls) {
+//                    temp = (String)temp;
+
+                }
+            }
+            spiderController.startSpider(spider, url);
             System.out.println("Spider started");
 
             ArrayList articles = spider.getArticles();

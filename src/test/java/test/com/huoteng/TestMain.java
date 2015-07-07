@@ -50,7 +50,7 @@ public class TestMain {
         SearchIndex index = new SearchIndex();
 
         SpiderController spiderController = new SpiderController();
-        spiderController.startSpider(spider);
+        spiderController.startSpider(spider, "http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx");
 
         ArrayList articles = spider.getArticles();
 

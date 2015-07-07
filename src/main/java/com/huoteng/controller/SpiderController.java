@@ -8,9 +8,9 @@ import us.codecraft.webmagic.Spider;
  */
 public class SpiderController {
 
-    public void startSpider(NewsSpider spider) {
+    public void startSpider(NewsSpider spider, String url) {
         Spider.create(spider)
-                .addUrl("http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx")
+                .addUrl(url)
                 .thread(1)
                 .run();
     }
