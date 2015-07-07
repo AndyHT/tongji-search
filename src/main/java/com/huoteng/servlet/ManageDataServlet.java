@@ -44,7 +44,7 @@ public class ManageDataServlet extends HttpServlet {
         } else if (order.equals("deleteGot")) {
             //根据content删除GotURL
             if (hibernate.begin()) {
-                int deletedNumber = hibernate.deleteGotURLbyID(Integer.parseInt(content));
+                int deletedNumber = hibernate.deleteGotURLbyURL(content);
                 //将返回的List转为String
                 data += deletedNumber;
 
@@ -54,7 +54,7 @@ public class ManageDataServlet extends HttpServlet {
         } else if (order.equals("deleteTarget")) {
             //根据content删除TargetURL
             if (hibernate.begin()) {
-                int deletedNumber = hibernate.deleteTargetURLbyID(Integer.parseInt(content));
+                int deletedNumber = hibernate.deleteTargetURLbyURL(content);
                 data += deletedNumber;
 
                 isSuccess = true;

@@ -64,9 +64,6 @@
         <div>
           <div>
             <h3 class="manage-title">已抓取到的网页</h3>
-            <div class="btn-group manage-btn">
-              <button type="button" class="btn btn-primary" id="edit">Edit</button>
-            </div>
           </div>
           <div><!--显示已抓取到的网页-->
           <table class="table table-striped" id="table-got-url">
@@ -159,17 +156,16 @@
         for (var index = 0; index < deleteBtn.length; index++) {
           deleteBtn[index].onclick = function () {
             var parent = (this.parentNode).parentNode;
+            var content = parent.childNodes[3].innerHTML;
+            console.log(content);
             parent.remove();
 
-            var deletedRecord = {'order': 'deleteGot', 'content': index};
+            var deletedRecord = {'order': 'deleteGot', 'content': content};
             //删除数据库中记录
             $.ajax({
               type: 'POST',
-              url: 'http://localhost:8080/manage-date/',
-              date: deletedRecord,
-              success: function(data) {
-                //删除对应行回调函数
-              },
+              url: 'http://localhost:8080/manage-data/',
+              data: deletedRecord,
               dataType: 'json'});
           }
         } 

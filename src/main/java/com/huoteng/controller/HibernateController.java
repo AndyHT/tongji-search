@@ -98,25 +98,25 @@ public class HibernateController {
 
     /**
      * 4.根据ID删除TargetURL
-     * @param id id
+     * @param theUrl 要删除的URL
      * @return 删除的TargetURL List
      */
-    public int deleteTargetURLbyID(int id) {
-        Query deleteQuery = session.createQuery("delete from TargetUrl where id = ?");
-        deleteQuery.setInteger(0, id);
+    public int deleteTargetURLbyURL(String theUrl) {
+        Query deleteQuery = session.createQuery("delete from TargetUrl where url = ?");
+        deleteQuery.setString(0, theUrl);
         int deletedNumber = deleteQuery.executeUpdate();
         transaction.commit();
         return deletedNumber;
     }
 
     /**
-     * 5.根据ID删除GotURL
-     * @param id id
+     * 5.根据URL删除GotURL
+     * @param theUrl 要删除的URL
      * @return 删除的GotURL List
      */
-    public int deleteGotURLbyID(int id) {
-        Query deletedQuery = session.createQuery("delete from GotUrl where id = ?");
-        deletedQuery.setInteger(0, id);
+    public int deleteGotURLbyURL(String theUrl) {
+        Query deletedQuery = session.createQuery("delete from GotUrl where url = ?");
+        deletedQuery.setString(0, theUrl);
         int deletedNumber = deletedQuery.executeUpdate();
         transaction.commit();
         return deletedNumber;
