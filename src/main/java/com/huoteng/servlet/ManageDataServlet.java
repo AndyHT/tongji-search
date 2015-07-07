@@ -30,6 +30,7 @@ public class ManageDataServlet extends HttpServlet {
         String order = request.getParameter("order");
         String content = request.getParameter("content");
         System.out.println("got order:" + order);
+        System.out.println("got content:" + content);
 
         boolean isSuccess = false;
         HibernateController hibernate = new HibernateController();

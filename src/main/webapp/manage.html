@@ -60,20 +60,12 @@
             </table>
           </div>
         </div>
-        <hr></hr>
+        <hr>
         <div>
           <div>
             <h3 class="manage-title">已抓取到的网页</h3>
             <div class="btn-group manage-btn">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Manage <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Add</a></li>
-                <li><a href="#">Delete</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Update</a></li>
-              </ul>
+              <button type="button" class="btn btn-primary" id="edit">Edit</button>
             </div>
           </div>
           <div><!--显示已抓取到的网页-->
@@ -83,7 +75,22 @@
               <th>url</th>
               <th>title</th>
               <th>date</th>
+              <th>Manage</th>
             </tr>
+            <!--<tr>
+              <td>0</td>
+              <td>http://</td>
+              <td>hello</td>
+              <td>wordl</td>
+              <td><button class="btn btn-primary delete">Delete</button></td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>http://</td>
+              <td>hello</td>
+              <td>wordl</td>
+              <td><button class="btn btn-primary delete">Delete</button></td>
+            </tr>-->
           </table>
           </div>
         </div>
@@ -129,6 +136,7 @@
             addOriginUrl(data);
           },
           dataType: 'json'});
+          addFunc();
       });
       
       //向origin list中添加URL
@@ -136,16 +144,42 @@
         console.log(urlList);
         for (var index = 0; index < urlList.length; index++) {
           var article = urlList[index];
-          var temp = '<tr><td>' + index + '</td><td>' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td></tr>';
+          var btn = '<td><button type="button" class="btn btn-primary delete">Delete</button></td>';
+          
+          var temp = '<tr><td>' + index + '</td><td>' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td>' + btn + '</tr>';
           $('#table-got-url').append(temp);
+          
         }
-        $('#start-spider').disabled = false;
+        $('#start-spider').disabled =false;
+        addFunc();
       }
       
+      function addFunc() {
+        var deleteBtn = document.getElementsByClassName('delete');
+        for (var index = 0; index < deleteBtn.length; index++) {
+          deleteBtn[index].onclick = function () {
+            var parent = (this.parentNode).parentNode;
+            parent.remove();
+
+            var deletedRecord = {'order': 'deleteGot', 'content': index};
+            //删除数据库中记录
+            $.ajax({
+              type: 'POST',
+              url: 'http://localhost:8080/manage-date/',
+              date: deletedRecord,
+              success: function(data) {
+                //删除对应行回调函数
+              },
+              dataType: 'json'});
+          }
+        } 
+      }
+
       //向target list中添加URL  
       // function addTargetUrl(urlList) {
         
       // }
+
     </script>
   </body>
 </html>

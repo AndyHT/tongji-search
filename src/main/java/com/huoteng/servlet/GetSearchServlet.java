@@ -81,7 +81,6 @@ public class GetSearchServlet extends HttpServlet {
                 out.write(jsonResult.getBytes());
                 out.close();
 
-                //跳转到result.html
             } catch (JSONException e) {
                 e.printStackTrace();
             }
