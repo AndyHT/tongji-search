@@ -17,6 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="styles/cover.css" rel="stylesheet">
     <link href="styles/index.css" rel="stylesheet">
+    <link href="styles/result.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -31,7 +32,7 @@
 
   <body>
 
-    <div class="site-wrapper">
+    <div class="site-wrapper" id="index">
       <div class="site-wrapper-inner">
         <div class="cover-container">
           <div class="masthead clearfix">
@@ -72,6 +73,28 @@
         </div>
       </div>
     </div>
+    
+    <div id="result" hidden="true">
+      <div id="topBar">
+        <div class="container">
+          <img src="images/logo.png"/>
+        </div>
+        <div class="container" id="formDiv">
+          <div>
+              <form>
+                  <input id="inputBox" type="text">
+                  <input id="searchButton" type="submit" value="搜索" style="color: white">
+              </form>
+          </div>
+        </div>
+      </div>
+      <script>
+          document.getElementById("formDiv").style.width = window.screen.width.toString()+"px";
+      </script>
+      <br><br><br><br>
+      <div id="search-result">
+      </div>
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -102,35 +125,37 @@
       })
       
       function loadResultPage(resultList) {
-        
+        console.log(resultList);
+        $('#index').hide();
+        $('#result').show();
+
+        //在result中填入结果
+         if (resultList.length > 0) {
+           for (var i = 0; i < resultList.length; i++) {
+             var resultElement = resultList[i];
+             var newNode = document.createElement('div');
+             newNode.className = 'resultItem';
+             var newNodeTitle = document.createElement('h3');
+             var newNodeContent = document.createElement('p');
+             var newNodeUrl = document.createElement('a');
+             newNodeTitle.innerHTML = resultElement.title;
+             newNodeContent.innerHTML = resultElement.content;
+             newNodeUrl.innerHTML = resultElement.url;
+             newNodeUrl.setAttribute('href', resultElement.url);
+             newNodeUrl.setAttribute('target', '_blank');
+            
+             newNode.appendChild(newNodeTitle);
+             newNode.appendChild(newNodeContent);
+             newNode.appendChild(newNodeUrl);
+             document.getElementById('search-result').appendChild(newNode);
+           }
+         } else {
+           //显示搜索结果为0
+           var nullTitle = document.createElement('h2');
+           nullTitle.innerHTML = '抱歉，未搜索到结果';
+           document.getElementById('search-result').appendChild(nullTitle);
+         }
       }
-      // $('#search-input').bind('keyup',function(){
-      //   var searchText = $('#search-input').val();
-      //   $.get('http://localhost:8080/s?key='+searchText,function(data){
-      //     console.log(data);
-      //     // var content = data.name;
-      //     // console.log(content);
-      //     // content = '<li>' + content + '</li>';
-      //     // $('#search-suggest').html(content);
-      //     // $('#search-suggest').show().css({
-      //     // top:$('#search-form').offset().top + $('#search-form').height()+10,
-      //     // left:$('#search-form').offset().left,
-      //     // position:'absolute'
-      //   });
-      // },'json');
-    // });
-    // $(document).bind('click',function(){
-    //   $('#search-suggest').hide();
-    // })
-    // $(document).ready(function(){
-    //   $.get('http://localhost:8080/newMessage',function(newMessage){
-    //     //解析newMessage
-    //     $('#new-message').show().css({
-    //       //newMessage的位置
-    //       //请求newMessage失败了怎么办？
-    //     });
-    //   },'json')
-    // });
     </script>
   </body>
 </html>

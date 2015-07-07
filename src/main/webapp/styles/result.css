@@ -1,0 +1,74 @@
+        body{
+            margin:0px;
+        }
+        .container {
+            width: 80px;
+            background: #f4f4f4;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .container img{
+            max-width: 100px;
+        }
+        .container form{
+            margin-left: 20px;
+        }
+        #inputBox{
+            width: 500px;
+            height: 30px;
+            font-family: formFont;
+            font-size: 18px;
+        }
+        #searchButton{
+            width: 100px;
+            height: 38px;
+            font-family: formFont;
+            background-color: #1387ff;
+            font-size: 20px;
+            border-radius: 6px;
+            border: hidden;
+
+        }
+        #searchButton:hover{
+            background-color: #00c7ff;
+        }
+
+        @font-face {
+            font-family: formFont;
+            src: url('font/msyh.ttf');
+        }
+
+        .resultItem{
+            width: 450px;
+            word-break: break-all;
+            word-wrap: break-word;
+            font-family: formFont;
+            margin-left: 12px;
+        }
+
+        .resultItem h3{
+            margin-bottom: 2px;
+            color: #398439;
+        }
+        .resultItem h3:hover{
+            color: #14ea0a;
+        }
+
+        .resultItem p{
+            font-size: 15px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            color: #919191;
+        }
+
+        .resultItem p:hover{
+            color: #101010;
+        }
+
+        .resultItem a:hover{
+            color: #1387ff;
+        }
+
+        #topBar{
+            position: fixed;
+        }
