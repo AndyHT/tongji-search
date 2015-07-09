@@ -9,7 +9,8 @@
             <generator class="native"/>
         </id>
         <property name="url" column="url"/>
-        <property name="data" column="data" type="java.util.Date"/>
+        <property name="data" column="data"/>
         <property name="title" column="title"/>
+        <property name="content" column="content"/>
     </class>
 </hibernate-mapping>

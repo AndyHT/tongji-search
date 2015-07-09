@@ -3,7 +3,7 @@ package com.huoteng.entity;
 import javax.persistence.*;
 
 /**
- * Created by huoteng on 6/2/15.
+ * Created by huoteng on 7/9/15.
  */
 @Entity
 @Table(name = "target_url", schema = "", catalog = "search")

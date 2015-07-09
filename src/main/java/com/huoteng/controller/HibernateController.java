@@ -170,6 +170,7 @@ public class HibernateController {
             gotUrl.setUrl(((Article) object).url);
             gotUrl.setTitle(((Article) object).title);
             gotUrl.setData(((Article) object).date);
+            gotUrl.setContent(((Article) object).content);
             session.save(gotUrl);
 
             if (0 == (i %20)) {

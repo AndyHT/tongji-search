@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by huoteng on 6/2/15.
+ * Created by huoteng on 7/9/15.
  */
 @Entity
 @Table(name = "got_url", schema = "", catalog = "search")
@@ -13,6 +13,7 @@ public class GotUrl {
     private String url;
     private Date data;
     private String title;
+    private String content;
 
     @Id
     @Column(name = "id")
@@ -54,6 +55,16 @@ public class GotUrl {
         this.title = title;
     }
 
+    @Basic
+    @Column(name = "content")
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,6 +76,7 @@ public class GotUrl {
         if (url != null ? !url.equals(gotUrl.url) : gotUrl.url != null) return false;
         if (data != null ? !data.equals(gotUrl.data) : gotUrl.data != null) return false;
         if (title != null ? !title.equals(gotUrl.title) : gotUrl.title != null) return false;
+        if (content != null ? !content.equals(gotUrl.content) : gotUrl.content != null) return false;
 
         return true;
     }
@@ -75,6 +87,7 @@ public class GotUrl {
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (data != null ? data.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
     }
 }
