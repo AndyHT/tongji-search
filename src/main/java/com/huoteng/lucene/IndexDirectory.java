@@ -1,9 +1,14 @@
 package com.huoteng.lucene;
 
+import com.huoteng.entity.GotUrl;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.SimpleFSDirectory;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huoteng on 5/25/15.
@@ -107,6 +112,35 @@ public class IndexDirectory {
         }else{
             System.out.println("删除目录"+dir+"失败！");
             return false;
+        }
+    }
+
+    public static void createIndex(List<GotUrl> urls) throws IOException {
+        Directory directory = IndexDirectory.getDirectory();
+        String indexFileName = "/Users/huoteng/Documents/index/";
+        //删除Index文件
+        File indexFile = new File(indexFileName);
+        if (indexFile.exists()) {
+            //删index
+            IndexDirectory.delete(indexFileName);
+        }
+        //建index
+        boolean createIndexFolderIsSuccess = indexFile.mkdir();
+        IndexDirectory.setIndexFile(indexFile);
+        directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
+        IndexDirectory.setDirectory(directory);
+
+        SearchIndex index = new SearchIndex();
+
+
+        for (Object object : urls) {
+            GotUrl aUrl = (GotUrl)object;
+            System.out.println("url:" + aUrl.getUrl());
+            System.out.println("title:" + aUrl.getTitle());
+            System.out.println("date:" + aUrl.getData());
+            System.out.println();
+
+            index.createIndex(aUrl.getUrl(), aUrl.getTitle(), aUrl.getContent(), aUrl.getData(), directory);
         }
     }
 

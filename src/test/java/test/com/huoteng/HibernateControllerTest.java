@@ -80,14 +80,12 @@ public void testDeleteTargetURLbyURL() throws Exception {
 * 
 */ 
 @Test
-public void createIndexFolder() throws Exception {
-    File indexFolder = new File("/Users/huoteng/Documents/index/");
-    if (indexFolder.exists()) {
-        //删
-    } else {
-        //建
-        indexFolder.mkdir();
+public void testDeleteGotURLbyURL() {
+    HibernateController hibernateController = new HibernateController();
+    if (hibernateController.begin()) {
+        hibernateController.deleteGotURLbyURL("http://sse.tongji.edu.cn/Notice/1004008");
     }
+
 }
 
 /** 

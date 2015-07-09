@@ -2,12 +2,18 @@ package com.huoteng.servlet;
 
 import com.huoteng.controller.HibernateController;
 import com.huoteng.json.Json;
+import com.huoteng.lucene.IndexDirectory;
+import com.huoteng.lucene.SearchIndex;
+import com.huoteng.model.Article;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.SimpleFSDirectory;
 import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Dictionary;
@@ -77,6 +83,15 @@ public class ManageDataServlet extends HttpServlet {
 
                 isSuccess = true;
             }
+        } else if (order.equals("completed")) {
+            //根据database中的content重新建立索引
+            if (hibernate.begin()) {
+                List urls = hibernate.findAllGotURL();
+
+                IndexDirectory.createIndex(urls);
+                data = "succeed";
+            }
+
         }
         response.addHeader("Content-Type", "text/javascript;charset=utf-8");
         response.addHeader("Cache-Control", "private");

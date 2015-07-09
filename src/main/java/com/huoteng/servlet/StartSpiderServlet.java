@@ -86,17 +86,11 @@ public class StartSpiderServlet extends HttpServlet {
                         System.out.println("got articles");
                     }
                 }
-//                String url = "http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx";
-//
-//                spiderController.startSpider(spider, url);
-
-//                ArrayList articles = spider.getArticles();
 
                 if (articles != null) {
                     //删除数据库里的记录
                     hibernate.deleteAllGotUrl();
                     System.out.println("delete article in db");
-
 
 
                     //创建index

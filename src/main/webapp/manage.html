@@ -69,6 +69,7 @@
         <div>
           <div>
             <h3 class="manage-title">已抓取到的网页</h3>
+            <button type="button" class="btn btn-primary manage-btn" id="completed">Completed Edit</button>
           </div>
           <div><!--显示已抓取到的网页-->
           <table class="table table-striped" id="table-got-url">
@@ -164,7 +165,7 @@
           var article = urlList[0][index];
           var btn = '<td><button type="button" class="btn btn-primary delete">Delete</button></td>';
 
-          var tempArticle = '<tr><td>' + index + '</td><td>' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td>' + btn + '</tr>';
+          var tempArticle = '<tr><td>' + index + '</td><td id="got-url">' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td>' + btn + '</tr>';
           $('#table-got-url').append(tempArticle);
 
         }
@@ -185,7 +186,7 @@
         for (var index = 0; index < deleteBtn.length; index++) {
           deleteBtn[index].onclick = function () {
             var parent = (this.parentNode).parentNode;
-            var content = parent.childNodes[3].innerHTML;
+            var content = document.getElementById('got-url').innerHTML;
             console.log(content);
             parent.remove();
 
@@ -200,10 +201,23 @@
         } 
       }
 
-      //向target list中添加URL  
-      // function addTargetUrl(urlList) {
-        
-      // }
+      document.getElementById('completed').onclick = function () {
+        var completedEdit = {'order': 'completed', 'content': ''};
+//        alert('更新索引完成!');
+
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:8080/manage-data/',
+          data: completedEdit,
+          dataType: 'json',
+          success: function (data) {
+            alert('更新索引完成!');
+
+            if (data === 'succeed') {
+            }
+          }});
+      }
+
 
     </script>
   </body>
