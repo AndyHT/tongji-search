@@ -44,7 +44,7 @@ public class HibernateController {
         boolean success = false;
         try {
             session = factory.getCurrentSession();
-            transaction = session.beginTransaction();
+            transaction = session.beginTransaction();//偶尔会有异常，多刷新几次就好了
 
             success = true;
         } catch (HibernateException e) {
@@ -154,5 +154,21 @@ public class HibernateController {
             }
         }
         transaction.commit();
+    }
+
+    /**
+     * 删除GotURL所有记录
+     */
+    public void deleteAllGotUrl() {
+        Query deleteAll = session.createQuery("delete from GotUrl");
+        deleteAll.executeUpdate();
+        transaction.commit();
+    }
+
+    /**
+     * 删除磁盘上的索引文件
+     */
+    public void deleteIndexFile() {
+
     }
 }

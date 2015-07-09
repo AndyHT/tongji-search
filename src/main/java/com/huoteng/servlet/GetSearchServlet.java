@@ -58,11 +58,6 @@ public class GetSearchServlet extends HttpServlet {
         ArrayList result;
         result = engine.search(keyword, directory);
 
-//            System.out.println("go to result.jsp");
-//            request.setAttribute("result", result);
-//            request.getRequestDispatcher("result.jsp").forward(request, response);
-//            System.out.println("result:" + result);
-
         //将result转为json
         String jsonResult = null;
         try {

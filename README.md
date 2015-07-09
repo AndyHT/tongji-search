@@ -28,7 +28,6 @@ web in ~/Desktop/search
 * 找一张足够分辨率的背景图
 * 完成ajax,实现manage页面的target URL的管理
 * 如果可能实现文本的存储，当got URL有变化时重新进行分词处理和建立索引
-* 每次启动爬虫前需要删除数据库里的记录和索引文件
 
 ###服务器端
 * 需要完成Servlet以实现Ajax

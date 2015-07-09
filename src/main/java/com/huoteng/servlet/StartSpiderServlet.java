@@ -43,70 +43,91 @@ public class StartSpiderServlet extends HttpServlet {
 
         if (Boolean.valueOf(order)) {
             Directory directory = IndexDirectory.getDirectory();
-            if (directory == null) {
+//            if (directory == null) {
+////                if (indexFile.isDirectory()) {
+////                    IndexDirectory.setIndexFile(indexFile);
+////                    directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
+////                    IndexDirectory.setDirectory(directory);
+////                }
+//
+//            }
+            String indexFileName = "/Users/huoteng/Documents/index/";
 
-                File indexFile = new File("/Users/huoteng/Documents/index/");
+            //删除Index文件
+            File indexFile = new File(indexFileName);
+            if (indexFile.exists()) {
+                //删
+                IndexDirectory.delete(indexFileName);
+            }
+            //建
+            boolean createIndexFolderIsSuccess = indexFile.mkdir();
+            if (createIndexFolderIsSuccess) {
+                IndexDirectory.setIndexFile(indexFile);
+                directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
+                IndexDirectory.setDirectory(directory);
 
-                if (indexFile.isDirectory()) {
-                    IndexDirectory.setIndexFile(indexFile);
-                    directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
-                    IndexDirectory.setDirectory(directory);
+
+                //启动爬虫建立索引
+                NewsSpider spider = new NewsSpider();
+                SearchIndex index = new SearchIndex();
+
+                SpiderController spiderController = new SpiderController();
+
+                //从数据库里那URL
+                String url = "http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx";
+//            if (hibernate.begin()) {
+//                List urls = hibernate.findAllTargetURL();
+//                for (Object temp : urls) {
+////                    temp = (String)temp;
+//
+//                }
+//            }
+                spiderController.startSpider(spider, url);
+                System.out.println("Spider started");
+
+                ArrayList articles = spider.getArticles();
+                System.out.println("got articles");
+
+                //删除数据库里的记录
+                HibernateController hibernate = new HibernateController();
+                if (hibernate.begin()) {
+                    //先删除
+                    System.out.println("delete article in db");
+                    hibernate.deleteAllGotUrl();
                 }
 
-            }
+                //创建index
+                for (Object object : articles) {
+                    Article article = (Article)object;
+                    System.out.println("url:" + article.url);
+                    System.out.println("title:" + article.title);
+                    System.out.println("date:" + article.date);
+                    System.out.println();
 
-            //启动爬虫建立索引
-            NewsSpider spider = new NewsSpider();
-            SearchIndex index = new SearchIndex();
-
-            SpiderController spiderController = new SpiderController();
-
-            //从数据库里那URL
-            HibernateController hibernate = new HibernateController();
-            String url = "http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx";
-            if (hibernate.begin()) {
-                List urls = hibernate.findAllTargetURL();
-                for (Object temp : urls) {
-//                    temp = (String)temp;
-
+                    index.createIndex(article.url, article.title, article.content, article.date, directory);
                 }
-            }
-            spiderController.startSpider(spider, url);
-            System.out.println("Spider started");
 
-            ArrayList articles = spider.getArticles();
-            System.out.println("got articles");
+                if (hibernate.begin()) {
+                    //再储存
+                    System.out.println("store articles in db");
+                    hibernate.addGotURL(articles);
+                }
 
-            //存数据库
-            HibernateController hibernat = new HibernateController();
-            if (hibernat.begin()) {
-                hibernat.addGotURL(articles);
-            }
-            //创建index
-            for (Object object : articles) {
-                Article article = (Article)object;
-                System.out.println("url:" + article.url);
-                System.out.println("title:" + article.title);
-                System.out.println("date:" + article.date);
-                System.out.println();
+                response.addHeader("Content-Type", "text/javascript;charset=utf-8");
+                response.addHeader("Cache-Control", "private");
 
-                index.createIndex(article.url, article.title, article.content, article.date, directory);
-            }
+                //完成后应答前端,前端发送刷新list请求
+                OutputStream out = response.getOutputStream();
 
-            response.addHeader("Content-Type", "text/javascript;charset=utf-8");
-            response.addHeader("Cache-Control", "private");
+                String resp = null;
+                try {
+                    resp = Json.changeArticleListToJson(articles);
+                    out.write(resp.getBytes());
+                    out.close();
 
-            //完成后应答前端,前端发送刷新list请求
-            OutputStream out = response.getOutputStream();
-
-            String resp = null;
-            try {
-                resp = Json.changeArticleListToJson(articles);
-                out.write(resp.getBytes());
-                out.close();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

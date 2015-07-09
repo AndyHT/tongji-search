@@ -1,42 +1,112 @@
-package com.huoteng.lucene;
+package test.com.huoteng;
 
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
+import com.huoteng.controller.HibernateController;
+import org.junit.Test;
+import org.junit.Before; 
+import org.junit.After;
 
 import java.io.File;
 
-/**
- * Created by huoteng on 5/25/15.
- */
-public class IndexDirectory {
+/** 
+* HibernateController Tester. 
+* 
+* @author <Authors name> 
+* @since <pre>Jul 9, 2015</pre> 
+* @version 1.0 
+*/ 
+public class HibernateControllerTest { 
 
+@Before
+public void before() throws Exception { 
+} 
 
-    private static File indexFile;
+@After
+public void after() throws Exception { 
+} 
 
-    private static Directory directory;
+/** 
+* 
+* Method: begin() 
+* 
+*/ 
+@Test
+public void testBegin() throws Exception { 
+//TODO: Test goes here... 
+} 
 
-    public static Directory getDirectory() {
-        return directory;
+/** 
+* 
+* Method: findAllTargetURL() 
+* 
+*/ 
+@Test
+public void testFindAllTargetURL() throws Exception { 
+//TODO: Test goes here... 
+} 
+
+/** 
+* 
+* Method: findAllGotURL() 
+* 
+*/ 
+@Test
+public void testFindAllGotURL() throws Exception { 
+//TODO: Test goes here... 
+} 
+
+/** 
+* 
+* Method: isUser(String name, String pass) 
+* 
+*/ 
+@Test
+public void testIsUser() throws Exception { 
+//TODO: Test goes here... 
+} 
+
+/** 
+* 
+* Method: deleteTargetURLbyURL(String theUrl) 
+* 
+*/ 
+@Test
+public void testDeleteTargetURLbyURL() throws Exception { 
+//TODO: Test goes here... 
+} 
+
+/** 
+* 
+* Method: deleteGotURLbyURL(String theUrl) 
+* 
+*/ 
+@Test
+public void createIndexFolder() throws Exception {
+    File indexFolder = new File("/Users/huoteng/Documents/index/");
+    if (indexFolder.exists()) {
+        //删
+    } else {
+        //建
+        indexFolder.mkdir();
     }
+}
 
-    public static void setDirectory(Directory directory) {
-        IndexDirectory.directory = directory;
-    }
+/** 
+* 
+* Method: addNewTargetURL(String url) 
+* 
+*/ 
+@Test
+public void deleteIndex() throws Exception {
 
-    public static File getIndexFile() {
-        return indexFile;
-    }
+    //String fileName = "g:/temp/xwz.txt";
+    //DeleteFileUtil.deleteFile(fileName);
+    String fileDir = "/Users/huoteng/Documents/index/";
+    //DeleteFileUtil.deleteDirectory(fileDir);
+    delete(fileDir);
+}
 
-    public static void setIndexFile(File indexFile) {
-        IndexDirectory.indexFile = indexFile;
-    }
 
 
-    /**
-     * 删除Index
-     * @param fileName index 目录
-     * @return 是否成功
-     */
     public static boolean delete(String fileName){
         File file = new File(fileName);
         if(!file.exists()){
@@ -110,4 +180,18 @@ public class IndexDirectory {
         }
     }
 
+    /**
+* 
+* Method: deleteAllGotUrl() 
+* 
+*/ 
+@Test
+public void testDeleteAllGotUrl() throws Exception {
+    HibernateController testController = new HibernateController();
+    if (testController.begin()) {
+        testController.deleteAllGotUrl();
+    }
 }
+
+
+} 
