@@ -61,14 +61,16 @@ public class ManageDataServlet extends HttpServlet {
             }
         } else if (order.equals("update")) {
             //刷新页面数据,返回data
+
             if (hibernate.begin()) {
 
                 List urls = hibernate.findAllGotURL();
                 try {
                     data += Json.changeUrlListToJson(urls, true);
-//                    urls.clear();
-//                    urls = hibernate.findAllTargetURL();
-//                    data += Json.changeUrlListToJson(urls, false);
+                    urls.clear();
+                    urls = hibernate.findAllTargetURL();
+                    String temp = Json.changeUrlListToJson(urls, false);
+                    data = "[" + data + "," + temp + "]";
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

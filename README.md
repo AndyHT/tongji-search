@@ -26,7 +26,6 @@ web in ~/Desktop/search
 进行集合测试，完成项目
 ###前端部分
 * 找一张足够分辨率的背景图
-* 完成ajax,实现manage页面的target URL的管理
 * 如果可能实现文本的存储，当got URL有变化时重新进行分词处理和建立索引
 
 ###服务器端

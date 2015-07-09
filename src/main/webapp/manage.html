@@ -52,10 +52,10 @@
                 <th>编号</th>
                 <th>url</th>
               </tr>
-              <tr>
+              <!--<tr>
                 <td>1</td>
                 <td>http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx</td>
-              </tr>
+              </tr>-->
             </table>
           </div>
           <div class="input-group">
@@ -129,7 +129,7 @@
       
       $('document').ready(function () {
         console.log("start load data");
-        var loadList = {'order': 'update', 'content': ''};
+        var loadList = {'order': 'update', 'content': 'got'};
         $.ajax({
           type: 'POST',
           url: 'http://localhost:8080/manage-data/',
@@ -138,7 +138,7 @@
             addOriginUrl(data);
           },
           dataType: 'json'});
-          addFunc();
+          addFuncDeleteListening();
           
           document.getElementById('addNew').onclick = function() {
             var newUrl = $('#theNewUrl').val();
@@ -160,19 +160,27 @@
       //向origin list中添加URL
       function addOriginUrl(urlList) {
         console.log(urlList);
-        for (var index = 0; index < urlList.length; index++) {
-          var article = urlList[index];
+        for (var index = 0; index < urlList[0].length; index++) {
+          var article = urlList[0][index];
           var btn = '<td><button type="button" class="btn btn-primary delete">Delete</button></td>';
-          
-          var temp = '<tr><td>' + index + '</td><td>' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td>' + btn + '</tr>';
-          $('#table-got-url').append(temp);
-          
+
+          var tempArticle = '<tr><td>' + index + '</td><td>' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td>' + btn + '</tr>';
+          $('#table-got-url').append(tempArticle);
+
         }
+
+        for (var index = 0; index < urlList[1].length; index++) {
+          var url = urlList[1][index];
+
+          var tempUrl = '<tr><td>' + index +'</td><td>' + url.url + '</td></tr>'
+          $('#target-url-list').append(tempUrl);
+        }
+
         $('#start-spider').disabled =false;
-        addFunc();
+        addFuncDeleteListening();
       }
       
-      function addFunc() {
+      function addFuncDeleteListening() {
         var deleteBtn = document.getElementsByClassName('delete');
         for (var index = 0; index < deleteBtn.length; index++) {
           deleteBtn[index].onclick = function () {

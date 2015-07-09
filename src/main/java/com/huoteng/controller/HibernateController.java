@@ -22,7 +22,7 @@ public class HibernateController {
     private static SessionFactory factory;
     private Session session;
     private Transaction transaction;
-//    private boolean isNeedClose = false;
+    private boolean isNeedClose = false;
 
     static{
         try {
@@ -44,14 +44,26 @@ public class HibernateController {
         boolean success = false;
         try {
             session = factory.getCurrentSession();
-            transaction = session.beginTransaction();//偶尔会有异常，多刷新几次就好了
+            transaction = session.beginTransaction();
 
             success = true;
         } catch (HibernateException e) {
-            System.out.println("get current session fail");
+            System.out.println("get currentSession failling");
+            transaction.rollback();
             e.printStackTrace();
+
+//            session = factory.openSession();
+//            transaction = session.beginTransaction();
+//            isNeedClose = true;
+//            System.out.println("open a new session");
         }
         return success;
+    }
+
+    public void closeSession() {
+        if (isNeedClose) {
+            session.close();
+        }
     }
 
 
@@ -62,6 +74,7 @@ public class HibernateController {
     public List findAllTargetURL() {
         Query targetURLQuery = session.createQuery("from TargetUrl");
 
+        closeSession();
         return targetURLQuery.list();
     }
 
@@ -72,6 +85,7 @@ public class HibernateController {
     public List findAllGotURL() {
         Query gotURLQuery = session.createQuery("from GotUrl ");
 
+        closeSession();
         return gotURLQuery.list();
     }
 
@@ -93,6 +107,9 @@ public class HibernateController {
                 break;
             }
         }
+
+        transaction.commit();
+        closeSession();
         return isUser;
     }
 
@@ -106,6 +123,8 @@ public class HibernateController {
         deleteQuery.setString(0, theUrl);
         int deletedNumber = deleteQuery.executeUpdate();
         transaction.commit();
+
+        closeSession();
         return deletedNumber;
     }
 
@@ -119,6 +138,8 @@ public class HibernateController {
         deletedQuery.setString(0, theUrl);
         int deletedNumber = deletedQuery.executeUpdate();
         transaction.commit();
+
+        closeSession();
         return deletedNumber;
     }
 
@@ -131,7 +152,10 @@ public class HibernateController {
         targetUrl.setUrl(url);
 
         session.save(targetUrl);
+
+        closeSession();
         transaction.commit();
+
     }
 
     /**
@@ -154,6 +178,8 @@ public class HibernateController {
             }
         }
         transaction.commit();
+
+        closeSession();
     }
 
     /**
@@ -163,12 +189,7 @@ public class HibernateController {
         Query deleteAll = session.createQuery("delete from GotUrl");
         deleteAll.executeUpdate();
         transaction.commit();
-    }
 
-    /**
-     * 删除磁盘上的索引文件
-     */
-    public void deleteIndexFile() {
-
+        closeSession();
     }
 }

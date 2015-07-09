@@ -2,6 +2,7 @@ package com.huoteng.servlet;
 
 import com.huoteng.controller.HibernateController;
 import com.huoteng.controller.SpiderController;
+import com.huoteng.entity.TargetUrl;
 import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
@@ -12,6 +13,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.json.JSONException;
+import us.codecraft.webmagic.processor.PageProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,23 +45,15 @@ public class StartSpiderServlet extends HttpServlet {
 
         if (Boolean.valueOf(order)) {
             Directory directory = IndexDirectory.getDirectory();
-//            if (directory == null) {
-////                if (indexFile.isDirectory()) {
-////                    IndexDirectory.setIndexFile(indexFile);
-////                    directory = new SimpleFSDirectory(IndexDirectory.getIndexFile());
-////                    IndexDirectory.setDirectory(directory);
-////                }
-//
-//            }
             String indexFileName = "/Users/huoteng/Documents/index/";
 
             //删除Index文件
             File indexFile = new File(indexFileName);
             if (indexFile.exists()) {
-                //删
+                //删index
                 IndexDirectory.delete(indexFileName);
             }
-            //建
+            //建index
             boolean createIndexFolderIsSuccess = indexFile.mkdir();
             if (createIndexFolderIsSuccess) {
                 IndexDirectory.setIndexFile(indexFile);
@@ -73,60 +67,73 @@ public class StartSpiderServlet extends HttpServlet {
 
                 SpiderController spiderController = new SpiderController();
 
-                //从数据库里那URL
-                String url = "http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx";
-//            if (hibernate.begin()) {
-//                List urls = hibernate.findAllTargetURL();
-//                for (Object temp : urls) {
-////                    temp = (String)temp;
-//
-//                }
-//            }
-                spiderController.startSpider(spider, url);
-                System.out.println("Spider started");
-
-                ArrayList articles = spider.getArticles();
-                System.out.println("got articles");
-
-                //删除数据库里的记录
+                ArrayList<Article> articles = null;
+                //从数据库里拿URL
                 HibernateController hibernate = new HibernateController();
+                System.out.println("开始数据库");
                 if (hibernate.begin()) {
-                    //先删除
-                    System.out.println("delete article in db");
+                    List targetUrls = hibernate.findAllTargetURL();
+
+                    for (Object aUrl : targetUrls) {
+                        spiderController.startSpider(spider, ((TargetUrl) aUrl).getUrl());
+                        System.out.println("Spider started");
+
+                        if (articles == null) {
+                            articles = spider.getArticles();
+                        } else {
+                            articles.addAll(spider.getArticles());
+                        }
+                        System.out.println("got articles");
+                    }
+                }
+//                String url = "http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx";
+//
+//                spiderController.startSpider(spider, url);
+
+//                ArrayList articles = spider.getArticles();
+
+                if (articles != null) {
+                    //删除数据库里的记录
                     hibernate.deleteAllGotUrl();
-                }
+                    System.out.println("delete article in db");
 
-                //创建index
-                for (Object object : articles) {
-                    Article article = (Article)object;
-                    System.out.println("url:" + article.url);
-                    System.out.println("title:" + article.title);
-                    System.out.println("date:" + article.date);
-                    System.out.println();
 
-                    index.createIndex(article.url, article.title, article.content, article.date, directory);
-                }
 
-                if (hibernate.begin()) {
-                    //再储存
-                    System.out.println("store articles in db");
-                    hibernate.addGotURL(articles);
-                }
+                    //创建index
+                    for (Object object : articles) {
+                        Article article = (Article)object;
+                        System.out.println("url:" + article.url);
+                        System.out.println("title:" + article.title);
+                        System.out.println("date:" + article.date);
+                        System.out.println();
 
-                response.addHeader("Content-Type", "text/javascript;charset=utf-8");
-                response.addHeader("Cache-Control", "private");
+                        index.createIndex(article.url, article.title, article.content, article.date, directory);
+                    }
 
-                //完成后应答前端,前端发送刷新list请求
-                OutputStream out = response.getOutputStream();
+                    if (hibernate.begin()) {
+                        //储存记录
+                        hibernate.addGotURL(articles);
+                        System.out.println("store articles in db");
+                    }
 
-                String resp = null;
-                try {
-                    resp = Json.changeArticleListToJson(articles);
-                    out.write(resp.getBytes());
-                    out.close();
+                    response.addHeader("Content-Type", "text/javascript;charset=utf-8");
+                    response.addHeader("Cache-Control", "private");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    //完成后应答前端,前端发送刷新list请求
+                    OutputStream out = response.getOutputStream();
+
+                    String resp = null;
+                    try {
+                        resp = Json.changeArticleListToJson(articles);
+                        resp = "[" + resp + "]";
+                        out.write(resp.getBytes());
+                        out.close();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("Articles is null");
                 }
             }
         }
