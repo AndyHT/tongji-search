@@ -64,8 +64,10 @@ public void testFindAllTargetURL() throws Exception {
 */ 
 @Test
 public void testIsUser() throws Exception { 
-//TODO: Test goes here... 
-} 
+    HibernateController controller = new HibernateController();
+
+    System.out.println(controller.isUser("霍腾", "123"));
+}
 
 /** 
 * 

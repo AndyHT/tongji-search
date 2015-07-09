@@ -9,6 +9,7 @@ import com.huoteng.lucene.SearchEngine;
 import com.huoteng.lucene.SearchIndex;
 import com.huoteng.model.Article;
 import com.huoteng.spider.NewsSpider;
+import com.huoteng.spider.TongjiSpider;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
@@ -62,7 +63,8 @@ public class StartSpiderServlet extends HttpServlet {
 
 
                 //启动爬虫建立索引
-                NewsSpider spider = new NewsSpider();
+                NewsSpider sseSpider = new NewsSpider();
+                TongjiSpider tongjiSpider = new TongjiSpider();
                 SearchIndex index = new SearchIndex();
 
                 SpiderController spiderController = new SpiderController();
@@ -73,16 +75,32 @@ public class StartSpiderServlet extends HttpServlet {
                 System.out.println("开始数据库");
                 List targetUrls = hibernate.findAllTargetURL();
 
+                System.out.println("Spider started");
                 for (Object aUrl : targetUrls) {
-                    spiderController.startSpider(spider, ((TargetUrl) aUrl).getUrl());
-                    System.out.println("Spider started");
+                    if (((TargetUrl) aUrl).getUrl().equals("http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx")) {
+                        spiderController.startSSESpider(sseSpider, ((TargetUrl) aUrl).getUrl());
 
-                    if (articles == null) {
-                        articles = spider.getArticles();
-                    } else {
-                        articles.addAll(spider.getArticles());
+                        if (articles == null) {
+                            articles = sseSpider.getArticles();
+                        } else {
+                            articles.addAll(sseSpider.getArticles());
+                        }
+                    } else if (((TargetUrl) aUrl).getUrl().equals("http://news.tongji.edu.cn/classid-5.html")) {
+                        spiderController.startTongjiSpider(tongjiSpider, ((TargetUrl) aUrl).getUrl());
+
+                        if (articles == null) {
+                            articles = tongjiSpider.getArticles();
+                        } else {
+                            articles.addAll(tongjiSpider.getArticles());
+                        }
                     }
-                    System.out.println("got articles");
+
+//                    if (articles == null) {
+//                        articles = sseSpider.getArticles();
+//                    } else {
+//                        articles.addAll(sseSpider.getArticles());
+//                    }
+//                    System.out.println("got articles");
                 }
 
                 if (articles != null) {
@@ -102,7 +120,7 @@ public class StartSpiderServlet extends HttpServlet {
                         index.createIndex(article.url, article.title, article.content, article.date, directory);
                     }
 
-                        //储存记录
+                    //储存记录
                     hibernate.addGotURL(articles);
                     System.out.println("store articles in db");
 

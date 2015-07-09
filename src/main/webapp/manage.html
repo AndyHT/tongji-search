@@ -124,6 +124,8 @@
           success: function (data) {
             //向list中添加tuples
             addOriginUrl(data);
+            alert('抓取数据完毕');
+            document.getElementById('start-spider').disabled = false;
           },
           dataType: 'json'});
       };
@@ -177,7 +179,7 @@
           $('#target-url-list').append(tempUrl);
         }
 
-        document.getElementsById('start-spider').disabled = false;
+
 //        $('#start-spider').disabled =false;
         addFuncDeleteListening();
       }
