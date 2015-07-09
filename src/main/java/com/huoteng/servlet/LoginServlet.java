@@ -21,25 +21,13 @@ public class LoginServlet extends HttpServlet {
         System.out.println("get login message," + user + "," + password);
         //访问数据库判断用户是否存在
         HibernateController hibernat = new HibernateController();
-        if (hibernat.begin()) {
-            if (hibernat.isUser(user, password)) {
-                HttpSession loginSession = request.getSession();
-                loginSession.setAttribute("username",user);
-                response.sendRedirect(request.getContextPath() + "/manage.html");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/loginfail.html");
-            }
+        if (hibernat.isUser(user, password)) {
+            HttpSession loginSession = request.getSession();
+            loginSession.setAttribute("username",user);
+            response.sendRedirect(request.getContextPath() + "/manage.html");
         } else {
             response.sendRedirect(request.getContextPath() + "/loginfail.html");
         }
 
-
-//        if (user.equals("admin@qq.com") && password.equals("admin")) {
-//            HttpSession loginSession = request.getSession();
-//            loginSession.setAttribute("username",user);
-//            response.sendRedirect(request.getContextPath() + "/manage.html");
-//        } else {
-//            response.sendRedirect(request.getContextPath() + "/loginfail.html");
-//        }
     }
 }

@@ -38,37 +38,26 @@ public class ManageDataServlet extends HttpServlet {
         System.out.println("got order:" + order);
         System.out.println("got content:" + content);
 
-        boolean isSuccess = false;
         HibernateController hibernate = new HibernateController();
         String data = "";
         if (order.equals("add")) {
             //根据content增加TargetURL
-            if (hibernate.begin()) {
-                hibernate.addNewTargetURL(content);
-                isSuccess = true;
-            }
+            hibernate.addNewTargetURL(content);
+
         } else if (order.equals("deleteGot")) {
             //根据content删除GotURL
-            if (hibernate.begin()) {
                 int deletedNumber = hibernate.deleteGotURLbyURL(content);
                 //将返回的List转为String
                 data += deletedNumber;
 
-                isSuccess = true;
-            }
 
         } else if (order.equals("deleteTarget")) {
             //根据content删除TargetURL
-            if (hibernate.begin()) {
                 int deletedNumber = hibernate.deleteTargetURLbyURL(content);
                 data += deletedNumber;
 
-                isSuccess = true;
-            }
         } else if (order.equals("update")) {
             //刷新页面数据,返回data
-
-            if (hibernate.begin()) {
 
                 List urls = hibernate.findAllGotURL();
                 try {
@@ -81,16 +70,12 @@ public class ManageDataServlet extends HttpServlet {
                     e.printStackTrace();
                 }
 
-                isSuccess = true;
-            }
         } else if (order.equals("completed")) {
             //根据database中的content重新建立索引
-            if (hibernate.begin()) {
                 List urls = hibernate.findAllGotURL();
 
                 IndexDirectory.createIndex(urls);
                 data = "succeed";
-            }
 
         }
         response.addHeader("Content-Type", "text/javascript;charset=utf-8");

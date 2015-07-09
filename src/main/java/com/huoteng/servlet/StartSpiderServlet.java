@@ -71,20 +71,18 @@ public class StartSpiderServlet extends HttpServlet {
                 //从数据库里拿URL
                 HibernateController hibernate = new HibernateController();
                 System.out.println("开始数据库");
-                if (hibernate.begin()) {
-                    List targetUrls = hibernate.findAllTargetURL();
+                List targetUrls = hibernate.findAllTargetURL();
 
-                    for (Object aUrl : targetUrls) {
-                        spiderController.startSpider(spider, ((TargetUrl) aUrl).getUrl());
-                        System.out.println("Spider started");
+                for (Object aUrl : targetUrls) {
+                    spiderController.startSpider(spider, ((TargetUrl) aUrl).getUrl());
+                    System.out.println("Spider started");
 
-                        if (articles == null) {
-                            articles = spider.getArticles();
-                        } else {
-                            articles.addAll(spider.getArticles());
-                        }
-                        System.out.println("got articles");
+                    if (articles == null) {
+                        articles = spider.getArticles();
+                    } else {
+                        articles.addAll(spider.getArticles());
                     }
+                    System.out.println("got articles");
                 }
 
                 if (articles != null) {
@@ -104,11 +102,9 @@ public class StartSpiderServlet extends HttpServlet {
                         index.createIndex(article.url, article.title, article.content, article.date, directory);
                     }
 
-                    if (hibernate.begin()) {
                         //储存记录
-                        hibernate.addGotURL(articles);
-                        System.out.println("store articles in db");
-                    }
+                    hibernate.addGotURL(articles);
+                    System.out.println("store articles in db");
 
                     response.addHeader("Content-Type", "text/javascript;charset=utf-8");
                     response.addHeader("Cache-Control", "private");

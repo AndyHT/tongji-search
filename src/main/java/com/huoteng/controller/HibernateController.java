@@ -40,26 +40,6 @@ public class HibernateController {
         }
     }
 
-    public boolean begin() {
-        boolean success = false;
-        try {
-            session = factory.getCurrentSession();
-            transaction = session.beginTransaction();
-
-            success = true;
-        } catch (HibernateException e) {
-            System.out.println("get currentSession failling");
-            transaction.rollback();
-            e.printStackTrace();
-
-//            session = factory.openSession();
-//            transaction = session.beginTransaction();
-//            isNeedClose = true;
-//            System.out.println("open a new session");
-        }
-        return success;
-    }
-
     public void closeSession() {
         if (isNeedClose) {
             session.close();
@@ -72,10 +52,21 @@ public class HibernateController {
      * @return All TargetURL List
      */
     public List findAllTargetURL() {
-        Query targetURLQuery = session.createQuery("from TargetUrl");
 
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get currentSession failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+        Query targetURLQuery = session.createQuery("from TargetUrl");
+        List result = targetURLQuery.list();
         closeSession();
-        return targetURLQuery.list();
+        return result;
     }
 
     /**
@@ -83,10 +74,22 @@ public class HibernateController {
      * @return All GotURL List
      */
     public List findAllGotURL() {
-        Query gotURLQuery = session.createQuery("from GotUrl ");
 
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get currentSession failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+
+        Query gotURLQuery = session.createQuery("from GotUrl ");
+        List result = gotURLQuery.list();
         closeSession();
-        return gotURLQuery.list();
+        return result;
     }
 
     /**
@@ -97,6 +100,18 @@ public class HibernateController {
      */
     public boolean isUser(String name, String pass) {
         boolean isUser = false;
+
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get currentSession failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+
 
         Query userQuery = session.createQuery("from Users");
         List users = userQuery.list();
@@ -119,6 +134,18 @@ public class HibernateController {
      * @return 删除的TargetURL List
      */
     public int deleteTargetURLbyURL(String theUrl) {
+
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get currentSession failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+
         Query deleteQuery = session.createQuery("delete from TargetUrl where url = ?");
         deleteQuery.setString(0, theUrl);
         int deletedNumber = deleteQuery.executeUpdate();
@@ -134,6 +161,18 @@ public class HibernateController {
      * @return 删除的GotURL List
      */
     public int deleteGotURLbyURL(String theUrl) {
+
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get session failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+
         Query deletedQuery = session.createQuery("delete from GotUrl where url = ?");
         deletedQuery.setString(0, theUrl);
         int deletedNumber = deletedQuery.executeUpdate();
@@ -148,14 +187,25 @@ public class HibernateController {
      * @param url new URL
      */
     public void addNewTargetURL(String url) {
+
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get currentSession failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+
         TargetUrl targetUrl = new TargetUrl();
         targetUrl.setUrl(url);
 
         session.save(targetUrl);
 
-        closeSession();
         transaction.commit();
-
+        closeSession();
     }
 
     /**
@@ -163,6 +213,18 @@ public class HibernateController {
      * @param gotUrls 需要加入Database的GotURLs
      */
     public void addGotURL(ArrayList gotUrls) {
+
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get currentSession failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+
         int i = 0;
         for (Object object : gotUrls) {
             i++;
@@ -175,7 +237,7 @@ public class HibernateController {
 
             if (0 == (i %20)) {
                 session.flush();
-                session.close();
+//                session.close();
             }
         }
         transaction.commit();
@@ -187,6 +249,18 @@ public class HibernateController {
      * 删除GotURL所有记录
      */
     public void deleteAllGotUrl() {
+
+        try {
+            session = factory.openSession();
+            isNeedClose = true;
+            transaction = session.beginTransaction();
+
+        } catch (HibernateException e) {
+            System.out.println("get currentSession failling");
+            transaction.rollback();
+            e.printStackTrace();
+        }
+
         Query deleteAll = session.createQuery("delete from GotUrl");
         deleteAll.executeUpdate();
         transaction.commit();

@@ -104,11 +104,9 @@ public void testDeleteDirectory() throws Exception {
 @Test
 public void testCreateIndex() throws Exception {
     HibernateController hibernateController = new HibernateController();
-    if (hibernateController.begin()) {
-        List urls = hibernateController.findAllGotURL();
+    List urls = hibernateController.findAllGotURL();
 
-        IndexDirectory.createIndex(urls);
-    }
+    IndexDirectory.createIndex(urls);
 
 }
 
