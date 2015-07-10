@@ -52,10 +52,10 @@
                 <th>编号</th>
                 <th>url</th>
               </tr>
-              <!--<tr>
+<!--               <tr>
                 <td>1</td>
                 <td>http://sse.tongji.edu.cn/InfoCenter/Lastest_Notice.aspx</td>
-              </tr>-->
+              </tr> -->
             </table>
           </div>
           <div class="input-group">
@@ -69,7 +69,6 @@
         <div>
           <div>
             <h3 class="manage-title">已抓取到的网页</h3>
-            <button type="button" class="btn btn-primary manage-btn" id="completed">Completed Edit</button>
           </div>
           <div><!--显示已抓取到的网页-->
           <table class="table table-striped" id="table-got-url">
@@ -132,7 +131,7 @@
       
       $('document').ready(function () {
         console.log("start load data");
-        var loadList = {'order': 'update', 'content': 'got'};
+        var loadList = {'order': 'update', 'content': ''};
         $.ajax({
           type: 'POST',
           url: 'http://localhost:8080/manage-data/',
@@ -166,10 +165,10 @@
         for (var index = 0; index < urlList[0].length; index++) {
           var article = urlList[0][index];
           var btn = '<td><button type="button" class="btn btn-primary delete">Delete</button></td>';
-
-          var tempArticle = '<tr><td>' + index + '</td><td id="got-url">' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td>' + btn + '</tr>';
+          
+          var tempArticle = '<tr><td>' + index + '</td><td>' + article.url + '</td><td>' + article.title + '</td><td>' + article.date + '</td>' + btn + '</tr>';
           $('#table-got-url').append(tempArticle);
-
+          
         }
 
         for (var index = 0; index < urlList[1].length; index++) {
@@ -179,8 +178,6 @@
           $('#target-url-list').append(tempUrl);
         }
 
-
-//        $('#start-spider').disabled =false;
         addFuncDeleteListening();
       }
       
@@ -189,7 +186,7 @@
         for (var index = 0; index < deleteBtn.length; index++) {
           deleteBtn[index].onclick = function () {
             var parent = (this.parentNode).parentNode;
-            var content = document.getElementById('got-url').innerHTML;
+            var content = parent.childNodes[3].innerHTML;
             console.log(content);
             parent.remove();
 
@@ -214,13 +211,12 @@
           data: completedEdit,
           dataType: 'json',
           success: function (data) {
-            alert('更新索引完成!');
 
             if (data === 'succeed') {
+              alert('更新索引完成!');
             }
           }});
       }
-
 
     </script>
   </body>

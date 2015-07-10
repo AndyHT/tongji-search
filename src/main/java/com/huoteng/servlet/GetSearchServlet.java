@@ -3,6 +3,7 @@ package com.huoteng.servlet;
 import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
+import com.huoteng.model.Article;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.json.JSONException;
@@ -37,7 +38,12 @@ public class GetSearchServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String keyword = request.getParameter("key");
+        String field = request.getParameter("field");
         System.out.println("key:" + keyword);
+        System.out.println("field:" + field);
+
+        //根据feild查询
+
 
         //根据keyword查询
         SearchEngine engine = new SearchEngine();
@@ -55,13 +61,21 @@ public class GetSearchServlet extends HttpServlet {
             System.out.println("got directory");
         }
 
-        ArrayList result;
-        result = engine.search(keyword, directory);
+        ArrayList results;
+        results = engine.search(keyword, directory);
+
+        for (Object result : results) {
+            Article article = (Article) result;
+
+            if (article.content.length() > 100) {
+                article.content = article.content.substring(0, 100);
+            }
+        }
 
         //将result转为json
         String jsonResult = null;
         try {
-            jsonResult = Json.changeArticleListToJson(result);
+            jsonResult = Json.changeArticleListToJson(results);
 
             response.addHeader("Content-Type", "text/json;charset=utf-8");
             response.addHeader("Cache-Control", "private");

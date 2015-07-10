@@ -30,37 +30,61 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body id="body">
+  <div>
+    <h3 class="masthead-brand">Tongji Search</h3>
+    <nav>
+      <ul class="nav pull-right">
+        <li id="date">2015年6月1日</li>
+      </ul>
+      <script>
+        function showTime(){
+          var date = new Date();
+          document.getElementById("date").innerHTML = date.toLocaleString();
+        }
+        showTime();
+      </script>
+    </nav>
+  </div>
 
     <div class="site-wrapper" id="index">
       <div class="site-wrapper-inner">
-        <div class="cover-container">
+        <div class="cover-container" id="main">
           <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">Tongji Search</h3>
-              <nav>
-                <ul class="nav pull-right">
-                  <li>2015年6月1日</li>
-                  <li>第14周</li>
-                </ul>
-              </nav>
-            </div>
+
           </div>
           <div class="inner cover">
             <div class="tongji-logo">
               <img src="images/logo.png">
             </div>
             <div class="search-box">
-              <div class="form-signin search-form">
-                <input type="text" id="search-input" name="key" placeholder="搜索同济" class="form-control search-input-text" id="search-input">
+              <div class="search-container search-form">
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    全部
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a id="all" href="#" onclick="selected(id)">全部</a> </li>
+                    <li><a id="sse" href="#" onclick="selected(id)">sse</a></li>
+                    <li><a id="youth" href="#" onclick="selected(id)">校团委</a></li>
+                    <li><a id="news" href="#" onclick="selected(id)">新闻网</a></li>
+                  </ul>
+                </div>
+              </div>
+
+
+
+              <div class="search-container search-form">
+                <input type="text" id="search-input" name="key" placeholder="搜索同济" class="form-control search-input-text">
                 <input type="submit" id="search-btn" value="" class="search-input-btn">
               </div>
               <!--<form id="search-form" class="form-signin search-form">-->
               <!--</form>-->
-            </div>  
+            </div>
             <div class="message-div" id="new-message" style="display: none;">
               <div>
-          
+
               </div>
               <p>最新消息</p>
             </div>
@@ -73,11 +97,29 @@
         </div>
       </div>
     </div>
-    
+    <script>
+      document.getElementById("main").style.width = window.screen.width;
+    </script>
+
+
     <div id="result" hidden="true">
       <div id="topBar">
         <div class="container">
           <img src="images/logo.png"/>
+        </div>
+        <div class="container">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              全部
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <li><a id="result-all" href="#" onclick="selected(id)">全部</a> </li>
+              <li><a id="resultsse" href="#" onclick="selected(id)">sse</a></li>
+              <li><a id="result-youth" href="#" onclick="selected(id)">校团委</a></li>
+              <li><a id="result-news" href="#" onclick="selected(id)">新闻网</a></li>
+            </ul>
+          </div>
         </div>
         <div class="container" id="formDiv">
           <div>
@@ -89,7 +131,7 @@
         </div>
       </div>
       <script>
-          document.getElementById("formDiv").style.width = window.screen.width.toString()+"px";
+        document.getElementById("formDiv").style.width = window.screen.width.toString()+"px";
       </script>
       <br><br><br><br>
       <div id="search-result">
@@ -103,16 +145,28 @@
     <script src="scripts/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="scripts/ie10-viewport-bug-workaround.js"></script>
-    
-    <script>
+
+  <script>
+    var field = 'all';
+    function selected(id){
+      var item = document.getElementById(id);
+      var title = item.innerHTML.toString();
+      field = title;
+      document.getElementById("dropdownMenu1").innerHTML = title;
+    }
+  </script>
+
+
+  <script>
       $(document).keydown(function (event) {
         if (event.which == 13) {
           console.log('start search');
           var searchKey = $('#search-input').val();
+          $('body').css('background-image', 'null.png');
           if (searchKey !== '') {
             $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/s?key=' + $('#search-input').val(),
+            url: 'http://localhost:8080/s?key=' + $('#search-input').val() + '&field=' + field,
             success: function (data) {
               console.log(data);
               loadResultPage(data);
@@ -128,7 +182,7 @@
         console.log(resultList);
         $('#index').hide();
         $('#result').show();
-
+        
         //在result中填入结果
          if (resultList.length > 0) {
            for (var i = 0; i < resultList.length; i++) {
@@ -138,6 +192,7 @@
              var newNodeTitle = document.createElement('h3');
              var newNodeContent = document.createElement('p');
              var newNodeUrl = document.createElement('a');
+             var newHr = document.createElement('hr');
              newNodeTitle.innerHTML = resultElement.title;
              newNodeContent.innerHTML = resultElement.content;
              newNodeUrl.innerHTML = resultElement.url;
@@ -147,6 +202,7 @@
              newNode.appendChild(newNodeTitle);
              newNode.appendChild(newNodeContent);
              newNode.appendChild(newNodeUrl);
+             newNode.appendChild(newHr);
              document.getElementById('search-result').appendChild(newNode);
            }
          } else {

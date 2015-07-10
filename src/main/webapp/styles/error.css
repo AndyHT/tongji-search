@@ -66,3 +66,10 @@ body {
     border-bottom: 0;
   }
 }
+
+#date{
+  font-family: Arial;
+  font-size: 20px;
+  color: gray;
+  margin-top: 10px;
+}

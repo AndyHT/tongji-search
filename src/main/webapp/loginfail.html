@@ -36,9 +36,15 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav pull-right">
-            <li>2015年6月1日</li>
-            <li>第14周</li>
+            <li id="date">2015年6月1日</li>
           </ul>
+          <script>
+            function showTime(){
+              var date = new Date();
+              document.getElementById("date").innerHTML = date.toLocaleString();
+            }
+            showTime();
+          </script>
         </nav>
         <h3 class="text-muted">Tongji Search</h3>
       </div>

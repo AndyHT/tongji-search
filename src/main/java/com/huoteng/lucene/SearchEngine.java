@@ -46,7 +46,7 @@ public class SearchEngine {
             queryParse.setDefaultOperator(QueryParser.AND_OPERATOR);
             Query query = queryParse.parse(keyword);
             System.out.println("Query = " + query);
-            //搜索相似度最高的5条记录
+            //搜索相似度最高的10条记录
             TopDocs topDocs = searcher.search(query, 10);
             System.out.println("命中：" + topDocs.totalHits);
 
@@ -54,6 +54,10 @@ public class SearchEngine {
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
 
             for(int i = 0; i < topDocs.totalHits; ++i) {
+                if (i == 10) {
+                    break;
+                }
+                System.out.println("i:" + i);
                 Document targetDoc = searcher.doc(scoreDocs[i].doc);
                 System.out.println("url:" + targetDoc.getField("url").stringValue());
                 System.out.println("title:" + targetDoc.getField("title").stringValue());

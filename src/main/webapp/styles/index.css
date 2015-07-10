@@ -9,13 +9,12 @@
 }
 .search-box{
   margin: 0 auto;
-  width: 80%;
+  height: 40px;
+  margin-top: 10px;
 }
 .search-form {
   float: left;
-  background-color: #FFF;
   padding: 5px;
-  width: 100%;
 }
 .search-input-text {
   border: 0;
@@ -62,4 +61,48 @@
 .suggest ul li:hover{
   background-color: #e5e5e5;
   text-decoration: underline;
+}
+
+/*.dropdown{*/
+  /*height: 20px;*/
+  /*width: 80px;*/
+  /*margin-right: 10px;*/
+/*}*/
+
+.dropdown button{
+  width: 80px;
+  height: 30px;
+  font-family: Arial;
+  font-size: 18px;
+  line-height: 30px;
+  padding: 0px;
+}
+
+.search-container{
+  width: auto;
+  height: 40px;
+  background-color: white;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#search-input{
+  width: 370px;
+}
+
+body{
+  background-image: url(../images/tongji.png);
+  background-size: cover;
+}
+
+#date{
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
+  /*float: right;*/
+}
+
+.masthead-brand{
+  margin-top: 10px;
+  margin-left: 10px;
 }
