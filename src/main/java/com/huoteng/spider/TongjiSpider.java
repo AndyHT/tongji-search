@@ -1,6 +1,7 @@
 package com.huoteng.spider;
 
 import com.huoteng.model.Article;
+import com.huoteng.model.GotURL;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -25,6 +26,8 @@ public class TongjiSpider implements PageProcessor {
      * @param newsPage 抓取新闻的网页
      */
     public void process(Page newsPage) {
+
+        GotURL haveGot = new GotURL();
 
         List<String> blackNewsList = newsPage.getHtml().css("li.li_black").all();//得到black新闻标题和href
         List<String> whiteNesList = newsPage.getHtml().css("li.li_white").all();//得到white新闻标题和href
@@ -52,14 +55,17 @@ public class TongjiSpider implements PageProcessor {
 //                System.out.println("URL:" + url);
 //                System.out.println("Title:" + title);
 
-                //异步的方式去拿content
-                TongjiContentSpider contentSpider = new TongjiContentSpider();
-                Spider.create(contentSpider).addUrl(url).thread(1).run();
+                //检查URL是否已经抓取过
+                if (!haveGot.isExist(url)) {
+                    //异步的方式去拿content
+                    TongjiContentSpider contentSpider = new TongjiContentSpider();
+                    Spider.create(contentSpider).addUrl(url).thread(1).run();
 
-                String newsContent = contentSpider.getContent();
-                Date newsDate = contentSpider.getDate();
+                    String newsContent = contentSpider.getContent();
+                    Date newsDate = contentSpider.getDate();
 
-                articles.add(new Article(url, title, newsContent, newsDate));
+                    articles.add(new Article(url, title, newsContent, newsDate));
+                }
             }
         }
 

@@ -1,6 +1,7 @@
 package com.huoteng.spider;
 
 import com.huoteng.model.Article;
+import com.huoteng.model.GotURL;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -28,6 +29,8 @@ public class NewsSpider implements PageProcessor {
      */
     public void process(Page newsPage) {
 
+        GotURL haveGot = new GotURL();
+
         List<String> newsList = newsPage.getHtml().css("div.news_title").all();//得到新闻标题和href
 
         System.out.println("得到News");
@@ -53,14 +56,19 @@ public class NewsSpider implements PageProcessor {
 //                System.out.println("URL:" + url);
 //                System.out.println("Title:" + title);
 
-                //异步的方式去拿content
-                ContentSpider contentSpider = new ContentSpider();
-                Spider.create(contentSpider).addUrl(url).thread(1).run();
 
-                String newsContent = contentSpider.getContent();
-                Date newsDate = contentSpider.getDate();
+                if (!haveGot.isExist(url)) {
+                    //异步的方式去拿content
+                    ContentSpider contentSpider = new ContentSpider();
+                    Spider.create(contentSpider).addUrl(url).thread(1).run();
 
-                articles.add(new Article(url, title, newsContent, newsDate));
+                    String newsContent = contentSpider.getContent();
+                    Date newsDate = contentSpider.getDate();
+
+                    articles.add(new Article(url, title, newsContent, newsDate));
+                }
+
+
             }
         }
 

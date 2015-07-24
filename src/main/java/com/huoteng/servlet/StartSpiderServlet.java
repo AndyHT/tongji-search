@@ -2,12 +2,14 @@ package com.huoteng.servlet;
 
 import com.huoteng.controller.HibernateController;
 import com.huoteng.controller.SpiderController;
+import com.huoteng.entity.GotUrl;
 import com.huoteng.entity.TargetUrl;
 import com.huoteng.json.Json;
 import com.huoteng.lucene.IndexDirectory;
 import com.huoteng.lucene.SearchEngine;
 import com.huoteng.lucene.SearchIndex;
 import com.huoteng.model.Article;
+import com.huoteng.model.GotURL;
 import com.huoteng.spider.NewsSpider;
 import com.huoteng.spider.TongjiSpider;
 import org.apache.lucene.store.Directory;
@@ -94,35 +96,30 @@ public class StartSpiderServlet extends HttpServlet {
                             articles.addAll(tongjiSpider.getArticles());
                         }
                     }
-
-//                    if (articles == null) {
-//                        articles = sseSpider.getArticles();
-//                    } else {
-//                        articles.addAll(sseSpider.getArticles());
-//                    }
-//                    System.out.println("got articles");
                 }
 
                 if (articles != null) {
-                    //删除数据库里的记录
-                    hibernate.deleteAllGotUrl();
-                    System.out.println("delete article in db");
-
-
-                    //创建index
-                    for (Object object : articles) {
-                        Article article = (Article)object;
-                        System.out.println("url:" + article.url);
-                        System.out.println("title:" + article.title);
-                        System.out.println("date:" + article.date);
-                        System.out.println();
-
-                        index.createIndex(article.url, article.title, article.content, article.date, directory);
-                    }
-
                     //储存记录
                     hibernate.addGotURL(articles);
                     System.out.println("store articles in db");
+
+                    //创建index
+                    List urls = hibernate.findAllGotURL();
+                    for (Object object : urls) {
+                        GotUrl gotUrl = (GotUrl) object;
+                        index.createIndex(gotUrl.getUrl(), gotUrl.getTitle(), gotUrl.getContent(), gotUrl.getData(), directory);
+                    }
+
+//                    for (Object object : articles) {
+//                        Article article = (Article)object;
+//                        System.out.println("url:" + article.url);
+//                        System.out.println("title:" + article.title);
+//                        System.out.println("date:" + article.date);
+//                        System.out.println();
+//
+//                        index.createIndex(article.url, article.title, article.content, article.date, directory);
+//                    }
+
 
                     response.addHeader("Content-Type", "text/javascript;charset=utf-8");
                     response.addHeader("Cache-Control", "private");
