@@ -1,4 +1,4 @@
-package test.com.huoteng.controller; 
+package test.com.huoteng;
 
 import com.huoteng.controller.HibernateController;
 import com.huoteng.controller.SpiderController;

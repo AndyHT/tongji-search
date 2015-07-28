@@ -21,7 +21,7 @@ public class NewsSpider implements PageProcessor {
 
     private ArrayList<Article> articles = new ArrayList<Article>();
 
-    private Site sseSite = Site.me().setRetryTimes(3).setSleepTime(1000);
+    private Site sseSite = Site.me().setRetryTimes(3).setSleepTime(500);
 
     /**
      * 抓取网页的具体方法
@@ -29,7 +29,7 @@ public class NewsSpider implements PageProcessor {
      */
     public void process(Page newsPage) {
 
-        GotURL haveGot = new GotURL();
+//        GotURL haveGot = new GotURL();
 
         List<String> newsList = newsPage.getHtml().css("div.news_title").all();//得到新闻标题和href
 
@@ -44,7 +44,7 @@ public class NewsSpider implements PageProcessor {
         String title;
 
         for (String aNews : newsList) {
-//            System.out.println(aNews);
+            System.out.println(aNews);
 
             urlMatcher = urlPattern.matcher(aNews);
             titleMatcher = titlePattern.matcher(aNews);
@@ -53,11 +53,11 @@ public class NewsSpider implements PageProcessor {
                 url = urlMatcher.group();
                 title = titleMatcher.group();
                 title = title.replaceAll("[></a>]", "");
-//                System.out.println("URL:" + url);
-//                System.out.println("Title:" + title);
+                System.out.println("URL:" + url);
+                System.out.println("Title:" + title);
 
 
-                if (!haveGot.isExist(url)) {
+//                if (!haveGot.isExist(url)) {
                     //异步的方式去拿content
                     ContentSpider contentSpider = new ContentSpider();
                     Spider.create(contentSpider).addUrl(url).thread(1).run();
@@ -66,7 +66,7 @@ public class NewsSpider implements PageProcessor {
                     Date newsDate = contentSpider.getDate();
 
                     articles.add(new Article(url, title, newsContent, newsDate));
-                }
+//                }
 
 
             }
