@@ -34,3 +34,7 @@ web in ~/Desktop/search
 * completed!
 
 进行集合测试
+
+##issue
+* 知网cookie问题无法抓取（伪造cookie无法激活session ID）
+* Sina News无法得到下一页
